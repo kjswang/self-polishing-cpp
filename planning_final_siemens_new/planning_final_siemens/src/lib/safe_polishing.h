@@ -9,7 +9,7 @@
 */
 
 #include "customized_print.h"
-#include "load_param.h"
+#include "load_parameter.h"
 #include <Eigen/Dense>
 #include "robot_property_eigen.h"
 #include "distance_constraint_3d.h"

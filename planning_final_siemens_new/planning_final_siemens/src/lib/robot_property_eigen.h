@@ -15,7 +15,7 @@
 #include "CapPos.h"
 #include "structure.h"
 #include "global_var.h"
-#include "load_param.h"
+#include "load_parameter.h"
 
 
 using namespace std;

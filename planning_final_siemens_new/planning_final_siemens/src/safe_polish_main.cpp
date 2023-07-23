@@ -14,9 +14,9 @@
 #include <iostream>
 #include <Eigen/Dense>
 
-#include "safe_polish_HTPC.h"
+#include "safe_polishing.h"
 #include "CapPos.h"
-#include "load_param.h"
+#include "load_parameter.h"
 #include <fstream>
 #include "structure.h"
 #include "global_var.h"

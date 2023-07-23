@@ -10,7 +10,7 @@
 #include <Eigen/Dense>
 #include "structure.h"
 #include <cmath>
-#include "load_param.h"
+#include "load_parameter.h"
 #include "global_var.h"
 
 using namespace Eigen;
