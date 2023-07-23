@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/Array.hh
+set
+-
+stdexcept
+-
+iostream
+-
+iomanip
+-
+cmath
+-
+cstdlib
+-
+stdexcept
+-
+
+/home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc
+iostream
+-
+algorithm
+-
+cmath
+-
+limits
+-
+sstream
+-
+stdexcept
+-
+QuadProg++.hh
+/home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/QuadProg++.hh
+
+/home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/QuadProg++.hh
+Array.hh
+/home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/Array.hh
+

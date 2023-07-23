@@ -1,0 +1,600 @@
+#ifndef _LOADPARAMETER_H_
+#define _LOADPARAMETER_H_
+
+// basic file operations
+
+/*
+* Parameter loading library 
+* Modifier - 
+* Date - 
+*/
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include "structure.h"
+#include <map>
+#include "math_pack.h"
+#include "yaml-cpp/yaml.h"  // IWYU pragma: keep
+// #include <typeinfo>
+// #include <Eigen/Dense>
+
+// using namespace Eigen;
+using namespace std;
+
+
+void setMatrix(MatrixXd& row, string& data){
+    /*
+    * load matrix row from txt file
+    * data is a matrix row (string type)
+    * input data format: a,b,c,..,z
+    * abc...z are row elements
+    */
+    // words count 
+    int cnt = 0;
+    vector<float> row_tmp;
+    string element = ""; 
+    for (auto x : data){
+        if (x == ',') 
+       {    
+            // get row element
+            // cout << element << endl;
+            row_tmp.push_back(stof(element)); // push back next element in float
+            element = ""; // empty element
+            cnt++;
+       } 
+       else
+       { 
+           element = element + x; 
+       } 
+    }
+    // the last element doesn't have ","" behind it
+    row_tmp.push_back(stof(element)); // push back next element in float
+    // initilize matrix 
+    row.resize(1,row_tmp.size());
+    // push row vector value to Eigen::Matrix from input
+    cnt = 0;
+    for (vector<float>::const_iterator i = row_tmp.begin(); i != row_tmp.end(); ++i){
+        row(0,cnt) = double(*i); // row is a one row matrix
+        cnt++;
+    }
+}
+
+void loadWeldLeft(MatrixXd& weldleft){
+    fstream file("parameter/wp_setup/weld_left.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd rwo_tmp;
+    MatrixXd weld_left_tmp;
+    int cnt =0;
+    while (std::getline(file,data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weld_left_tmp = row_tmp;
+            cnt++;
+        } // the first row 
+        else {
+            weld_left_tmp = Vcat(weld_left_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    weldleft = weld_left_tmp;
+}
+
+void loadWeldRight(MatrixXd& weldright){
+    fstream file("parameter/wp_setup/weld_right.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd rwo_tmp;
+    MatrixXd weld_right_tmp;
+    int cnt =0;
+    while (std::getline(file,data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weld_right_tmp = row_tmp;
+            cnt++;
+        } // the first row 
+        else {
+            weld_right_tmp = Vcat(weld_right_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    weldright = weld_right_tmp;
+}
+
+void loadWeldTop(MatrixXd& weldtop){
+    fstream file("parameter/wp_setup/weld_top.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd rwo_tmp;
+    MatrixXd weld_top_tmp;
+    int cnt =0;
+    while (std::getline(file,data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weld_top_tmp = row_tmp;
+            cnt++;
+        } // the first row 
+        else {
+            weld_top_tmp = Vcat(weld_top_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    weldtop = weld_top_tmp;
+}
+
+void loadWeldBottom(MatrixXd& weldbottom){
+    fstream file("parameter/wp_setup/weld_bottom.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd rwo_tmp;
+    MatrixXd weld_bottom_tmp;
+    int cnt =0;
+    while (std::getline(file,data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weld_bottom_tmp = row_tmp;
+            cnt++;
+        } // the first row 
+        else {
+            weld_bottom_tmp = Vcat(weld_bottom_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    weldbottom = weld_bottom_tmp;
+}
+
+void loadWeldIn(MatrixXd& weldin){
+    fstream file("parameter/wp_setup/weld_in.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd rwo_tmp;
+    MatrixXd weld_in_tmp;
+    int cnt =0;
+    while (std::getline(file,data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weld_in_tmp = row_tmp;
+            cnt++;
+        } // the first row 
+        else {
+            weld_in_tmp = Vcat(weld_in_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    weldin = weld_in_tmp;
+}
+
+void loadWeldOut(MatrixXd& weldout){
+    fstream file("parameter/wp_setup/weld_out.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd rwo_tmp;
+    MatrixXd weld_out_tmp;
+    int cnt =0;
+    while (std::getline(file,data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weld_out_tmp = row_tmp;
+            cnt++;
+        } // the first row 
+        else {
+            weld_out_tmp = Vcat(weld_out_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    weldout = weld_out_tmp;
+}
+
+void loadplanePoints(MatrixXd& planePoints){
+    ifstream file("parameter/wp_setup/planePoints.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd row_tmp;
+    MatrixXd pp_tmp;
+    int cnt = 0;
+    while (std::getline(file, data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            pp_tmp = row_tmp;
+            cnt++;
+        } // the first row  
+        else{
+            pp_tmp = Vcat(pp_tmp, row_tmp);
+            cnt++;
+        }  
+    }
+    // set the original weldTraj
+    planePoints = pp_tmp;
+}
+
+void loadabc(MatrixXd& abc){
+    ifstream file("parameter/wp_setup/abc.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd row_tmp;
+    MatrixXd abc_tmp;
+    int cnt = 0;
+    while (std::getline(file, data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            abc_tmp = row_tmp;
+            cnt++;
+        } // the first row  
+        else{
+            abc_tmp = Vcat(abc_tmp, row_tmp);
+            cnt++;
+        }  
+    }
+    // set the original weldTraj
+    abc = abc_tmp;
+}
+
+void loadArr(MatrixXd& weldTraj){
+    /*
+    * load the weld points trajectories 
+    * weldTraj is stored as double type matrix 
+    * size: 3*n (n is the weld point number)
+    * input format: n*3 (n is weld point number, 3 is x,y,z in sequence)
+    */
+    ifstream file("parameter/wp_setup/real_weld.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd row_tmp;
+    MatrixXd weldTraj_tmp;
+    int cnt = 0;
+    cout << "start loading weld trajctory points:" << endl;
+    cout << "..." << endl;
+    while (std::getline(file, data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weldTraj_tmp = row_tmp;
+            cnt++;
+        } // the first row  
+        else{
+            weldTraj_tmp = Vcat(weldTraj_tmp, row_tmp);
+            cnt++;
+        }  
+    }
+    // set the original weldTraj
+    weldTraj = weldTraj_tmp;
+    // cout << "loaded weldTraj points are:" << endl;
+    // cout << weldTraj << endl;
+}
+
+
+void loadAnchor(MatrixXd& point_anchor){
+    ifstream file("parameter/wp_setup/point_anchor.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd row_tmp;
+    MatrixXd pa_tmp;
+    int cnt = 0;
+    while (std::getline(file, data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            pa_tmp = row_tmp;
+            cnt++;
+        } // the first row  
+        else{
+            pa_tmp = Vcat(pa_tmp, row_tmp);
+            cnt++;
+        }  
+    }
+    // set the original weldTraj
+    point_anchor = pa_tmp;
+}
+
+void loadDHbase(MatrixXd &DH, MatrixXd &base){
+    YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
+    assert(config["DH_params"].Type() == YAML::NodeType::Sequence);
+    assert(config.Type() == YAML::NodeType::Map);
+
+    // discard the first four DH parameters, we will use it as base 
+    // use the remaining DH parameters 
+    int cout = 1;
+    std::vector<double> remain_DH;
+    double tmp;
+
+    // initialize base 
+    base.resize(3,1); // base is x,y,z : 3-dimensional vector
+    for (YAML::const_iterator it=config["DH_params"].begin(); it!=config["DH_params"].end(); ++it){
+        // the dependes on the DH parameters property, z offset is d entry of DH parameter 
+        // first dimension 
+        if (cout == 2){
+            base(0,0) = 0;
+            base(1,0) = 0;
+            base(2,0) = it->as<double>();
+        }
+        if (cout >= 5){
+            // tmp = it->as<double>();
+            // std::cout << tmp << std::endl;
+            // abort();
+            remain_DH.push_back(it->as<double>());
+        }
+        cout++;
+    }
+    int row, col;
+    col = 4; // this is default format for DH 
+    row = remain_DH.size()/col;
+    vector2Matrix(DH, row, col, remain_DH);
+}
+
+void setInputField(inputfield& line, string& data){
+    /*
+    * make sure each txt line has no ' ' in the end
+    * make sure there is '\n' at end of txt file 
+    */
+    // words count 
+    int cnt = 0;
+    string word = ""; 
+    for (auto x : data){
+        if (x == ' ') 
+       {    
+            if(cnt == 0){
+                // get field
+                line.field.assign(word);
+                word = ""; // empty word
+                cnt++;
+            }
+            else{
+                // get elements
+                // cout << word << endl;
+                line.elements.push_back(stof(word)); // push back next element in float
+                word = ""; // empty word
+                cnt++;
+            }
+       } 
+       else
+       { 
+           word = word + x; 
+       } 
+    }
+    // the last element doesn't have blanket behind it
+    // cout << word << endl;
+    line.elements.push_back(stof(word)); // push back next element in float
+
+    // print out to test the correctness
+    // cout << line.field << endl;
+    // for (vector<float>::const_iterator i = line.elements.begin(); i != line.elements.end(); ++i)
+    //     cout << *i << ' ';
+    // cout << endl <<  "good to go" << endl;
+}
+
+struct Point{
+float x, y, z;
+};
+
+std::vector<Point> readXYZFile(const std::string& filename) {
+    std::vector<Point> points;
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error opening file:" << filename << std::endl;
+        return points;
+    }
+
+    std::string line;
+    while (std::getline(file,line)) {
+        Point point;
+        std::istringstream iss(line);
+        if(!(iss >> point.x >> point.y >> point.z)) {
+            std::cerr << "Error parsing line: " << likne << std::endl;
+            continue;
+        }
+        points.push_back(point);
+    }
+
+    file.close();
+    return points;
+}
+
+void loadWeldTraj(MatrixXd& weldTraj){
+    /*
+    * load the weld points trajectories 
+    * weldTraj is stored as double type matrix 
+    * size: 3*n (n is the weld point number)
+    * input format: n*3 (n is weld point number, 3 is x,y,z in sequence)
+    */
+    // ifstream file("src/pointcloud/weldTraj.txt");
+    fstream file("parameter/wp_setup/weldTraj.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd row_tmp;
+    MatrixXd weldTraj_tmp;
+    int cnt = 0;
+    while (std::getline(file, data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weldTraj_tmp = row_tmp;
+            cnt++;
+        } // the first row  
+        else{
+            weldTraj_tmp = Vcat(weldTraj_tmp, row_tmp);
+            cnt++;
+        }  
+    }
+    // set the original weldTraj
+    weldTraj = weldTraj_tmp;
+    // cout << "loaded weldTraj points are:" << endl;
+    // cout << weldTraj << endl;
+}
+
+void loadWorkpieceSetting(MatrixXd& abc,  MatrixXd& planePoints, MatrixXd& point_anchor, 
+        MatrixXd& weld_bottom, MatrixXd& weld_in, MatrixXd& weld_left, MatrixXd& weld_out, MatrixXd& weld_right, MatrixXd& weld_top){
+    loadabc(abc);
+    loadAnchor(point_anchor);
+    loadplanePoints(planePoints);
+    loadWeldIn(weld_in);
+    loadWeldBottom(weld_bottom);
+    loadWeldLeft(weld_left);
+    loadWeldOut(weld_out);
+    loadWeldRight(weld_right);
+    loadWeldTop(weld_top);
+}
+
+
+int loadSafePolishingSetting(double& alphaY_limit, double& alphaZ_limit, double& thres, int& nstep1, int& nstep2, int& nwait, MatrixXd& theta_init_default, MatrixXd& wp_pos_init_default){
+    ifstream file("parameter/parameters.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    while (std::getline(file, data)) {
+        // cout << data << "\n";
+        // clear line 
+        line.field.clear();
+        line.elements.clear();
+        
+        // customized parameter setting
+        // get the elements in string
+        // the first elements is name field
+        setInputField(line, data);
+
+        // feed line into dictionary 
+        dicts.insert(pair<string, vector<float> >(line.field, line.elements));
+    }
+    // set the input value
+    alphaY_limit = (double) dicts["alphaY_limit"][0];
+    alphaZ_limit = (double) dicts["alphaZ_limit"][0];
+    // theta = (double) dicts["theta"][0];
+    // start2exe = (int) dicts["start2exe"][0];
+    nstep1 = (int) dicts["nstep1"][0];
+    nstep2 = (int) dicts["nstep2"][0];
+    nwait = (int) dicts["nwait"][0];
+    thres = (double) dicts["thres"][0];
+    // pos_idle << (double) dicts["pos_idle"][0],
+    //             (double) dicts["pos_idle"][1],
+    //             (double) dicts["pos_idle"][2],
+    //             (double) dicts["pos_idle"][3],
+    //             (double) dicts["pos_idle"][4],
+    //             (double) dicts["pos_idle"][5];
+
+    // pos_middle << (double) dicts["pos_middle"][0],
+    //               (double) dicts["pos_middle"][1],
+    //               (double) dicts["pos_middle"][2],
+    //               (double) dicts["pos_middle"][3],
+    //               (double) dicts["pos_middle"][4],
+    //               (double) dicts["pos_middle"][5];
+
+    theta_ini_default << (double) dicts["theta_ini_default"][0],
+                  (double) dicts["theta_ini_default"][1],
+                  (double) dicts["theta_ini_default"][2],
+                  (double) dicts["theta_ini_default"][3],
+                  (double) dicts["theta_ini_default"][4],
+                  (double) dicts["theta_ini_default"][5];
+
+    wp_pos_init_default << (double) dicts["wp_pos_init_default"][0],
+                  (double) dicts["wp_pos_init_default"][1],
+                  (double) dicts["wp_pos_init_default"][2],
+                  (double) dicts["wp_pos_init_default"][3],
+                  (double) dicts["wp_pos_init_default"][4],
+                  (double) dicts["wp_pos_init_default"][5];
+
+    // check the input parameter setting value
+    cout << "alphaY_limit is :" << alphaY_limit << endl;
+    cout << "alphaZ_limit is :" << alphaZ_limit << endl;
+    cout << "theta_ini_default is :\n" << theta_ini_default << endl;
+    cout << "wp_pos_init_default is :\n" << wp_pos_init_default << endl;
+    // set the input value
+    cout << "all seems good" << endl;
+    // abort();
+    return 0;
+}
+
+
+void loadM1(MatrixXd& M){
+    YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
+    assert(config["M1"].Type() == YAML::NodeType::Sequence);
+    assert(config.Type() == YAML::NodeType::Map);
+    int cout = 1;
+    std::vector<double> M1_temp;
+    // record data to vector
+    for (YAML::const_iterator it=config["M1"].begin(); it!=config["M1"].end(); ++it){
+        // the dependes on the DH parameters property, z offset is d entry of DH parameter 
+        // first dimension 
+        M1_temp.push_back(it->as<double>());
+        cout++;
+    }
+    int row, col;
+    col = 4; // this is default format for transformation matrix 
+    row = M1_temp.size()/col;
+    vector2Matrix(M, row, col, M1_temp);
+}
