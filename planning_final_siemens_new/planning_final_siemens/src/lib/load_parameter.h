@@ -66,7 +66,7 @@ void loadWeldLeft(MatrixXd& weldleft){
     string data;
     inputfield line;
     map<string, vector<float> > dicts;
-    MatrixXd rwo_tmp;
+    MatrixXd row_tmp;
     MatrixXd weld_left_tmp;
     int cnt =0;
     while (std::getline(file,data)) {
@@ -94,7 +94,7 @@ void loadWeldRight(MatrixXd& weldright){
     string data;
     inputfield line;
     map<string, vector<float> > dicts;
-    MatrixXd rwo_tmp;
+    MatrixXd row_tmp;
     MatrixXd weld_right_tmp;
     int cnt =0;
     while (std::getline(file,data)) {
@@ -122,7 +122,7 @@ void loadWeldTop(MatrixXd& weldtop){
     string data;
     inputfield line;
     map<string, vector<float> > dicts;
-    MatrixXd rwo_tmp;
+    MatrixXd row_tmp;
     MatrixXd weld_top_tmp;
     int cnt =0;
     while (std::getline(file,data)) {
@@ -150,7 +150,7 @@ void loadWeldBottom(MatrixXd& weldbottom){
     string data;
     inputfield line;
     map<string, vector<float> > dicts;
-    MatrixXd rwo_tmp;
+    MatrixXd row_tmp;
     MatrixXd weld_bottom_tmp;
     int cnt =0;
     while (std::getline(file,data)) {
@@ -178,7 +178,7 @@ void loadWeldIn(MatrixXd& weldin){
     string data;
     inputfield line;
     map<string, vector<float> > dicts;
-    MatrixXd rwo_tmp;
+    MatrixXd row_tmp;
     MatrixXd weld_in_tmp;
     int cnt =0;
     while (std::getline(file,data)) {
@@ -206,7 +206,7 @@ void loadWeldOut(MatrixXd& weldout){
     string data;
     inputfield line;
     map<string, vector<float> > dicts;
-    MatrixXd rwo_tmp;
+    MatrixXd row_tmp;
     MatrixXd weld_out_tmp;
     int cnt =0;
     while (std::getline(file,data)) {
@@ -450,7 +450,7 @@ std::vector<Point> readXYZFile(const std::string& filename) {
         Point point;
         std::istringstream iss(line);
         if(!(iss >> point.x >> point.y >> point.z)) {
-            std::cerr << "Error parsing line: " << likne << std::endl;
+            std::cerr << "Error parsing line: " << line << std::endl;
             continue;
         }
         points.push_back(point);
@@ -554,12 +554,12 @@ int loadSafePolishingSetting(double& alphaY_limit, double& alphaZ_limit, double&
     //               (double) dicts["pos_middle"][4],
     //               (double) dicts["pos_middle"][5];
 
-    theta_ini_default << (double) dicts["theta_ini_default"][0],
-                  (double) dicts["theta_ini_default"][1],
-                  (double) dicts["theta_ini_default"][2],
-                  (double) dicts["theta_ini_default"][3],
-                  (double) dicts["theta_ini_default"][4],
-                  (double) dicts["theta_ini_default"][5];
+    theta_init_default << (double) dicts["theta_init_default"][0],
+                  (double) dicts["theta_init_default"][1],
+                  (double) dicts["theta_init_default"][2],
+                  (double) dicts["theta_init_default"][3],
+                  (double) dicts["theta_init_default"][4],
+                  (double) dicts["theta_init_default"][5];
 
     wp_pos_init_default << (double) dicts["wp_pos_init_default"][0],
                   (double) dicts["wp_pos_init_default"][1],
@@ -571,7 +571,7 @@ int loadSafePolishingSetting(double& alphaY_limit, double& alphaZ_limit, double&
     // check the input parameter setting value
     cout << "alphaY_limit is :" << alphaY_limit << endl;
     cout << "alphaZ_limit is :" << alphaZ_limit << endl;
-    cout << "theta_ini_default is :\n" << theta_ini_default << endl;
+    cout << "theta_init_default is :\n" << theta_init_default << endl;
     cout << "wp_pos_init_default is :\n" << wp_pos_init_default << endl;
     // set the input value
     cout << "all seems good" << endl;
@@ -598,3 +598,5 @@ void loadM1(MatrixXd& M){
     row = M1_temp.size()/col;
     vector2Matrix(M, row, col, M1_temp);
 }
+
+#endif
