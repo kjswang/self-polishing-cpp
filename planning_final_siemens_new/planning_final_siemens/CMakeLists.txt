@@ -21,7 +21,7 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 add_subdirectory(src)
 # add_subdirectory(src/lib)
 
-set(yaml_cxx_flags "-Wall ${GCC_EXTRA_OPTIONS} -pedantic -Wno-long-long -std=c++11 ${yaml_cxx_flags}")
+set(yaml_cxx_flags "-Wall ${GCC_EXTRA_OPTIONS} -pedantic -Wno-long-long -Wno-unused-variable -std=c++11 ${yaml_cxx_flags}")
 
 add_executable(safe_polish src/safe_polish_main.cpp ${headers})
 set_target_properties(safe_polish PROPERTIES

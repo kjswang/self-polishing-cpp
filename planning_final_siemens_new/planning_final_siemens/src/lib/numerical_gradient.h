@@ -12,6 +12,7 @@
 #include "structure.h"
 #include "distance_constraint_3d.h"
 #include <cmath>
+#include "safe_polishing.h"
 
 using namespace Eigen;
 using namespace std;
@@ -85,7 +86,7 @@ MatrixXd central_diff_polish_collaboration(MatrixXd x0, MatrixXd DH, MatrixXd ba
 
 MatrixXd Diff_Jac_num_grad(MatrixXd x0, MatrixXd c1, MatrixXd base, capsule cap[], tool tl, MatrixXd PC){
     int dim = x0.rows();
-    double y = next_point_WP(x0, c1, PC);
+    MatrixXd y = next_point_WP(x0, c1, PC);
     MatrixXd grad(1, dim);
 
     double eps = 1e-5;
@@ -93,13 +94,13 @@ MatrixXd Diff_Jac_num_grad(MatrixXd x0, MatrixXd c1, MatrixXd base, capsule cap[
     MatrixXd xp = x0;
     assert(x0.cols() == 1);
 
-    double yhi, ylo;
+    MatrixXd yhi, ylo;
     for (int i=0; i<dim; ++i){
         xp(i,0) = x(i,0)+eps/2;
         yhi = next_point_WP(x0, c1, PC);
         xp(i,0) = x(i,0)-eps/2;
         ylo = next_point_WP(x0, c1, PC);
-        grad(0,i) = (yhi - ylo)/eps;
+        grad(0,i) = (yhi - ylo).value()/eps;
         xp(i,0) = x(i,0);
     }
     return grad; 

@@ -25,150 +25,6 @@
 // #include "PlanningProblem_3d_position.h"
 using namespace std;
 
-void safe_polish(MatrixXd &start2exe_traj, MatrixXd &execution_traj, MatrixXd &exit_traj){
-
-string name = "GP50";
-Robot robot(name);
-
-
-
-// load_PC
-MatrixXd PC;
-load_PC(PC);
-
-MatrixXd arr_axis3;
-loadWeldTraj(arr_axis3);
-MatrixXd arr_axis3T = arr_axis3.transpose();
-MatrixXd abc, planePoints, point_anchor_axis3, weld_bottom, weld_in, weld_left, weld_out, weld_right, weld_top;
-loadWorkpieceSettings(abc, planePoints, point_anchor_axis3, weld_bottom, weld_in, weld_left, weld_out, weld_right, weld_top)
-
-MatrixXd weld_in_T = weld_in.transpose();
-MatrixXd in_center = calculateMean(weld_in_T);
-MatrixXd radius = weld_in_T.colwise() - in_center;
-MatrixXd arr_axis3 = weld_right.transpose();
-
-string exp_mode = "robot";
-string track_mode_main = "collaboration";
-string track_solver = "ICOP";
-string track_mode_sample = "robot";
-string explore_mode = "NSopt";
-string nullspace_mode = "sqp";
-
-vector<string> exp_mode_list = {"robot", "workpiece"};
-vector<string> track_solver_list = {"ICOP"};
-vector<string> explore_mode_list = {"None", "CSsample", "NSample", "NSopt"};
-vector<string> nullspace_mode_list = {"sqp", "interior-point", "active-set", "cmaes"};
-
-vector<string> config_list;
-// VectorXd theta_init_default(6);
-// theta_init_default << 0, -2.3, 0.5, 0, 0.5, 0.0;
-// Vector3d wp_pos_init_default(0.0, 0.4, 0.1);
-// double alphaY_limit = 0.3; 
-// double alphaZ_limit = 0.3;
-// int nstep1 = 5;
-// int nstep2 = 5;
-// int nwait = 1;
-
-double alphaY_limit, alphaZ_limit, thres;
-int nstep1, nstep2, nwait;
-MatrixXd theta_init_default, wp_pos_init_default;
-loadSafePolishingSetting(alphaY_limit, alphaZ_limit, nstep1, nstep2, theta_init_default, wp_pos_init_default);
-
-vector<Vector3d> wp_pos_list;
-
-double step = 0.1;
-
-for (double alphaY = -alphaY_limit; alphaY <= alphaY_limit; alphaY += step) {
-    for (double alphaZ = -alphaZ_limit; alphaZ <= alphaZ_limit; alphaZ += step){
-            Vector3d wp_pos_cur(0.0, alphaY + 0.5, alphaZ);
-            wp_pos_list.push_back(wp_pos_cur);
-            MatrixXd PC_processed, M_PC_processed;
-            VectorXd base_point_processed, center_point_processed;
-            tie(PC_processed, M_PC_processed, base_point_processed, center_point_processed) = processPC(PC, wp_pos_cur);
-            MatrixXd arr_cur = setVertice(arr_axis3T, M_PC);
-            std::cout << "arr_cur:\n" << arr_cur << "\n";
-    }
-
-}
-
-double joint2_limit = 0.2;
-double joint3_limit = 0.2;
-double joint4_limit = 0.2;
-vector<Vector3d> theta_init_list = [];
-
-for (double joint2 = -joint2_limit; joint2 <= joint2_limit; joint2 += step) {
-    for (double joint3 = -joint3_limit; joint3 <= joint3_limit; joint3 += step) {
-        for (double joint4 = -joint4_limit; joint4 <= joint4_limit; joint4 += step) {
-            VectorXd theta_init(6);
-            theta_init << 0.0, -2.3 + joint2, 0.5 + joint3, 0.0 + joint4, 0.5, -2.0;
-            theta_init_list.push_back(theta_init);
-            MatrixXd PC_processed, M_PC_processed;
-            VectorXd base_point_processed, center_point_processed;
-            tie(PC_processed, M_PC_processed, base_point_processed, center_point_processed) = processPC(PC, wp_pos_cur);
-            MatrixXd arr_cur = setVertice(arr_axis3T, M_PC);
-            std::cout << "arr_cur:\n" << arr_cur << "\n";
-        }
-
-    }
-
-}
-
-VectorXd theta_init = theta_init_default;
-Vecotr3d wp_pos_init = wp_pos_init_default;
-MatrixXd PC_processed, M_PC_processed;
-VectorXd base_point_processed, center_point_processed;
-tie(PC_processed, M_PC_processed, base_point_processed, center_point_processed) = processPC(PC, wp_pos_init);
-MatrixXd arr = setVertice(arr_axis3.transpose(), M_PC)
-
-int tfinal = arr.cols();
-setRobotGoal(robot, nstep1, nstep2, nwait, tfinal, theta_init, arr, center_point_processed);
-
-MatrixXd theta_pre, wp_pos_pre, c_pre, M_PC_0;
-theta_pre = theta_init;
-wp_pos_pre = wp_pos_init;
-c_pre = ForKine(theta_init, robot.DH, robot.base, robot.cap);
-M_PC_0 = M_PC;
-
-MatrixXd safe_traj = c_pre;
-MatrixXd safe_theta = theta_pre;
-MatrixXd safe_wp_pos = wp_pos_pre;
-
-safe_polish_procedure();
-
-MatrixXd safe_theta_T = safe_theta.transpose();
-vector<VectorXd> uniqueRows;
-
-for (int i = 0; i < safe_theta_T.rows(); ++i) {
-    VectorXd currentRow = transposed.row(i);
-
-    bool isUnique = true;
-    for (const auto& row : uniqueRows) {
-      if (currentRow.isApprox(row)) {
-        isUnique = false;
-        break;
-      }
-    }
-    if (isUnique) {
-      uniqueRows.push_back(currentRow);
-    }
-}
-
-MatrixXd safe_theta_unique(uniqueRows.size(), safe_theta_T.cols());
-
-for (int i = 0; i < uniqueRows.size(); ++i) {
-    safe_theta_unique.row(i) = uniqueRows[i];
-    }   
-
-MatrixXd safe_theta_unique_final = safe_theta_unique.transpose();
-}
-
-
-void load_PC(MatrixXd& PC){
-    string sample_file = "parameter/sampled_wp.xyz";
-    PC = readXYZFile(sample_file);
-}
-
-
 MatrixXd readXYZFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -204,7 +60,19 @@ MatrixXd readXYZFile(const std::string& filename) {
     return pointMatrix;
 }
 
-tuple<MatrixXd, MatrixXd, VectorXd, VectorXd> processPC(MatrixXd& PC, MatrixXd& PC_pos){
+
+void load_PC(MatrixXd& PC){
+    string sample_file = "parameter/sampled_wp.xyz";
+    PC = readXYZFile(sample_file);
+}
+
+MatrixXd setVertice(MatrixXd v, MatrixXd TransM) {
+    MatrixXd result = v * TransM.block(0, 0, 3, 3).transpose();
+    result.rowwise() += TransM.block(0, 3, 3, 1).transpose().replicate(v.rows(), 1);
+    return result;
+}
+
+tuple<MatrixXd, MatrixXd, VectorXd, VectorXd> processPC(const MatrixXd& PC, const MatrixXd& PC_pos){
     MatrixXd M1;
     M1.resize(4,4);
     loadM1(M1);
@@ -251,67 +119,14 @@ tuple<MatrixXd, MatrixXd, VectorXd, VectorXd> processPC(MatrixXd& PC, MatrixXd& 
         }
     }
 
-    PC = setVertice(PC, M_PC);
-    center_point = setVertice(certer_point, M_PC);
+    MatrixXd PC_modified = PC;
+    VectorXd center_point_modified = center_point;
+
+    PC_modified = setVertice(PC, M_PC);
+    center_point_modified = setVertice(center_point, M_PC);
 
     return std::make_tuple(PC.transpose(), M_PC, base_point, center_point);
 
-}
-
-
-MatrixXd setVertice(MatrixXd v, MatrixXd TransM) {
-    MatrixXd result = v * TransM.block(0, 0, 3, 3).transpose();
-    result.rowwise() += TransM.block(0, 3, 3, 1).transpose().replicate(v.rows, 1);
-    return result;
-}
-
-
-void setRobotGoal(Robot& robot, int start2exe, int nwait, int& tfinal, MatrixXd& theta_ini, MatrixXd weldTraj, MatrixXd& center_point){
-    /*
-    * Set the reference end effector trajectories for robot
-    * start2exe: the steps from initial pos to executation pos 
-    * nwait: the steps to wait before execution 
-    * tfinal: the reference weld point number 
-    */
-    // make sure weldTraj dimension is correct
-    assert(weldTraj.rows() == 3);
-
-    // get pos initial 
-    MatrixXd posini = ForKine(theta_ini, robot.DH, robot.base, robot.cap);
-    MatrixXd posexe = weldTraj.block(0,0,3,1);
-
-    // set robot end effector refrence trajectory
-    // from the initial states to execution states 
-    MatrixXd diff;
-    MatrixXd diff1 = center_point - posini;
-    MatrixXd diff2 = posexe - center_point;
-    MatrixXd tmp;
-    for (int t=1; t<=nstep1; ++t){
-        tmp = posini + double(t)/nstep1*diff1;
-        robot.goal = Hcat(robot.goal, tmp);
-    }
-
-    for (int t=1; t<=nstep2; ++t){
-        tmp = center_point + double(t)/nstep2*diff2;
-        robot.goal = Hcat(robot.goal, tmp);
-    }
-
-    // wait until the velocity and acceleration approaches 0
-    for (int t=1; t<=nwait; ++t){
-        robot.goal = Hcat(robot.goal, posexe);
-    }
-
-    // execute polishing (end-effector located precisely on the weld points)
-    int ministep = 1; // interpolation (augment weld points)
-    for (int t=0; t<tfinal-1; ++t){
-        diff = weldTraj.block(0,t+1,3,1) - weldTraj.block(0,t,3,1);
-        // interplation
-        for (int st=1; st<=ministep; ++st){
-            tmp = weldTraj.block(0,t,3,1) + double(st)/ministep*diff;
-            robot.goal = Hcat(robot.goal, tmp);
-        }
-    }
-    tfinal = (tfinal - 1)*ministep; // update tfinal steps
 }
 
 MatrixXd ForKine(MatrixXd theta_ini, MatrixXd DH, MatrixXd base, capsule RoCap[]){
@@ -364,6 +179,196 @@ MatrixXd ForKine(MatrixXd theta_ini, MatrixXd DH, MatrixXd base, capsule RoCap[]
     epos = M[nlink].block(0,0,3,3)*MatrixXd::Zero(3,1) + M[nlink].block(0,3,3,1) + base;
     return epos;
 }
+
+
+void setRobotGoal(Robot& robot, int nstep1, int nstep2, int nwait, int& tfinal, MatrixXd& theta_ini, MatrixXd weldTraj, MatrixXd& center_point){
+    /*
+    * Set the reference end effector trajectories for robot
+    * start2exe: the steps from initial pos to executation pos 
+    * nwait: the steps to wait before execution 
+    * tfinal: the reference weld point number 
+    */
+    // make sure weldTraj dimension is correct
+    assert(weldTraj.rows() == 3);
+
+    // get pos initial 
+    MatrixXd posini = ForKine(theta_ini, robot.DH, robot.base, robot.cap);
+    MatrixXd posexe = weldTraj.block(0,0,3,1);
+
+    // set robot end effector refrence trajectory
+    // from the initial states to execution states 
+    MatrixXd diff;
+    MatrixXd diff1 = center_point - posini;
+    MatrixXd diff2 = posexe - center_point;
+    MatrixXd tmp;
+    for (int t=1; t<=nstep1; ++t){
+        tmp = posini + double(t)/nstep1*diff1;
+        robot.goal = Hcat(robot.goal, tmp);
+    }
+
+    for (int t=1; t<=nstep2; ++t){
+        tmp = center_point + double(t)/nstep2*diff2;
+        robot.goal = Hcat(robot.goal, tmp);
+    }
+
+    // wait until the velocity and acceleration approaches 0
+    for (int t=1; t<=nwait; ++t){
+        robot.goal = Hcat(robot.goal, posexe);
+    }
+
+    // execute polishing (end-effector located precisely on the weld points)
+    int ministep = 1; // interpolation (augment weld points)
+    for (int t=0; t<tfinal-1; ++t){
+        diff = weldTraj.block(0,t+1,3,1) - weldTraj.block(0,t,3,1);
+        // interplation
+        for (int st=1; st<=ministep; ++st){
+            tmp = weldTraj.block(0,t,3,1) + double(st)/ministep*diff;
+            robot.goal = Hcat(robot.goal, tmp);
+        }
+    }
+    tfinal = (tfinal - 1)*ministep; // update tfinal steps
+}
+
+
+void safe_polish(MatrixXd &start2exe_traj, MatrixXd &execution_traj, MatrixXd &exit_traj){
+
+string name = "GP50";
+Robot robot(name);
+
+
+
+// load_PC
+MatrixXd PC;
+load_PC(PC);
+
+MatrixXd arr_axis3;
+loadWeldTraj(arr_axis3);
+MatrixXd arr_axis3T = arr_axis3.transpose();
+MatrixXd abc, planePoints, point_anchor_axis3, weld_bottom, weld_in, weld_left, weld_out, weld_right, weld_top;
+loadWorkpieceSetting(abc, planePoints, point_anchor_axis3, weld_bottom, weld_in, weld_left, weld_out, weld_right, weld_top);
+
+MatrixXd weld_in_T = weld_in.transpose();
+MatrixXd in_center = calculateMean(weld_in_T,0);
+MatrixXd radius = weld_in_T.colwise() - in_center;
+arr_axis3 = weld_right.transpose();
+
+string exp_mode = "robot";
+string track_mode_main = "collaboration";
+string track_solver = "ICOP";
+string track_mode_sample = "robot";
+string explore_mode = "NSopt";
+string nullspace_mode = "sqp";
+
+vector<string> exp_mode_list = {"robot", "workpiece"};
+vector<string> track_solver_list = {"ICOP"};
+vector<string> explore_mode_list = {"None", "CSsample", "NSample", "NSopt"};
+vector<string> nullspace_mode_list = {"sqp", "interior-point", "active-set", "cmaes"};
+
+vector<string> config_list;
+// VectorXd theta_init_default(6);
+// theta_init_default << 0, -2.3, 0.5, 0, 0.5, 0.0;
+// Vector3d wp_pos_init_default(0.0, 0.4, 0.1);
+// double alphaY_limit = 0.3; 
+// double alphaZ_limit = 0.3;
+// int nstep1 = 5;
+// int nstep2 = 5;
+// int nwait = 1;
+
+double alphaY_limit, alphaZ_limit, thres;
+int nstep1, nstep2, nwait;
+MatrixXd theta_init_default, wp_pos_init_default;
+loadSafePolishingSetting(alphaY_limit, alphaZ_limit, thres, nstep1, nstep2, nwait, theta_init_default, wp_pos_init_default);
+
+vector<Vector3d> wp_pos_list;
+
+double step = 0.1;
+
+for (double alphaY = -alphaY_limit; alphaY <= alphaY_limit; alphaY += step) {
+    for (double alphaZ = -alphaZ_limit; alphaZ <= alphaZ_limit; alphaZ += step){
+            Vector3d wp_pos_cur(0.0, alphaY + 0.5, alphaZ);
+            wp_pos_list.push_back(wp_pos_cur);
+            MatrixXd PC_processed, M_PC_processed;
+            VectorXd base_point_processed, center_point_processed;
+            tie(PC_processed, M_PC_processed, base_point_processed, center_point_processed) = processPC(PC, wp_pos_cur);
+            MatrixXd arr_cur = setVertice(arr_axis3T, M_PC_processed);
+            std::cout << "arr_cur:\n" << arr_cur << "\n";
+    }
+
+}
+
+double joint2_limit = 0.2;
+double joint3_limit = 0.2;
+double joint4_limit = 0.2;
+vector<Vector3d> theta_init_list;
+
+for (double joint2 = -joint2_limit; joint2 <= joint2_limit; joint2 += step) {
+    for (double joint3 = -joint3_limit; joint3 <= joint3_limit; joint3 += step) {
+        for (double joint4 = -joint4_limit; joint4 <= joint4_limit; joint4 += step) {
+            VectorXd theta_init(6);
+            theta_init << 0.0, -2.3 + joint2, 0.5 + joint3, 0.0 + joint4, 0.5, -2.0;
+            theta_init_list.push_back(theta_init);
+            MatrixXd PC_processed, M_PC_processed;
+            VectorXd base_point_processed, center_point_processed;
+            tie(PC_processed, M_PC_processed, base_point_processed, center_point_processed) = processPC(PC, wp_pos_init_default);
+            MatrixXd arr_cur = setVertice(arr_axis3T, M_PC_processed);
+            std::cout << "arr_cur:\n" << arr_cur << "\n";
+        }
+
+    }
+
+}
+
+MatrixXd theta_init = theta_init_default;
+MatrixXd wp_pos_init = wp_pos_init_default;
+MatrixXd PC_processed, M_PC_processed;
+MatrixXd base_point_processed, center_point_processed;
+tie(PC_processed, M_PC_processed, base_point_processed, center_point_processed) = processPC(PC, wp_pos_init);
+MatrixXd arr = setVertice(arr_axis3.transpose(), M_PC_processed);
+
+int tfinal = arr.cols();
+setRobotGoal(robot, nstep1, nstep2, nwait, tfinal, theta_init, arr, center_point_processed);
+
+MatrixXd theta_pre, wp_pos_pre, c_pre, M_PC_0;
+theta_pre = theta_init;
+wp_pos_pre = wp_pos_init;
+c_pre = ForKine(theta_init, robot.DH, robot.base, robot.cap);
+M_PC_0 = M_PC_processed;
+
+MatrixXd safe_traj = c_pre;
+MatrixXd safe_theta = theta_pre;
+MatrixXd safe_wp_pos = wp_pos_pre;
+
+safe_polish_procedure();
+
+MatrixXd safe_theta_T = safe_theta.transpose();
+vector<VectorXd> uniqueRows;
+
+for (int i = 0; i < safe_theta_T.rows(); ++i) {
+    VectorXd currentRow = transposed.row(i);
+
+    bool isUnique = true;
+    for (const auto& row : uniqueRows) {
+      if (currentRow.isApprox(row)) {
+        isUnique = false;
+        break;
+      }
+    }
+    if (isUnique) {
+      uniqueRows.push_back(currentRow);
+    }
+}
+
+MatrixXd safe_theta_unique(uniqueRows.size(), safe_theta_T.cols());
+
+for (int i = 0; i < uniqueRows.size(); ++i) {
+    safe_theta_unique.row(i) = uniqueRows[i];
+    }   
+
+MatrixXd safe_theta_unique_final = safe_theta_unique.transpose();
+}
+
+
+
 
 
 void safe_polish_procedure(MatrixXd& safe_theta, MatrixXd& safe_traj, Robot robot, MatrixXd planes, lineseg LineSegs[],  int start2exe, int nwait, int tfinal, 
@@ -497,7 +502,7 @@ for (int t=0; t<tfinal + nwait + start2exe-1; ++t){
     return 0;
 }
 
-MatrixXd next_point_WP(MatrixXd& wp_pos, MatrixXd& c1, MatrixXd& PC_origin) {
+MatrixXd next_point_WP(MatrixXd wp_pos, MatrixXd c1, MatrixXd PC_origin) {
     MatrixXd curPC;
     MatrixXd M_PC;
     tie(curPC, M_PC, ignore, ignore) = processPC(PC_origin, wp_pos);
@@ -654,7 +659,7 @@ tuple<MatrixXd, MatrixXd> safetrack_auto_collaboration(){
     int max_value = abs_PC_idx.maxCoeff();
 
     for (int j = 1; j <= max_value; j++) {
-        MaxtrixXd curPC;
+        MatrixXd curPC;
         for (int i = 0; i < PC_idx.rows(); i++) {
             if (PC_idx(i) == j){
                 curPC.convervativeResize(curPC.rows() + 1, curPC.cols());

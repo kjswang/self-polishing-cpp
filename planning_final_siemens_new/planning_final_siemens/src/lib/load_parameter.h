@@ -436,29 +436,29 @@ struct Point{
 float x, y, z;
 };
 
-std::vector<Point> readXYZFile(const std::string& filename) {
-    std::vector<Point> points;
-    std::ifstream file(filename);
+// std::vector<Point> readXYZFile(const std::string& filename) {
+//     std::vector<Point> points;
+//     std::ifstream file(filename);
 
-    if (!file.is_open()) {
-        std::cerr << "Error opening file:" << filename << std::endl;
-        return points;
-    }
+//     if (!file.is_open()) {
+//         std::cerr << "Error opening file:" << filename << std::endl;
+//         return points;
+//     }
 
-    std::string line;
-    while (std::getline(file,line)) {
-        Point point;
-        std::istringstream iss(line);
-        if(!(iss >> point.x >> point.y >> point.z)) {
-            std::cerr << "Error parsing line: " << line << std::endl;
-            continue;
-        }
-        points.push_back(point);
-    }
+//     std::string line;
+//     while (std::getline(file,line)) {
+//         Point point;
+//         std::istringstream iss(line);
+//         if(!(iss >> point.x >> point.y >> point.z)) {
+//             std::cerr << "Error parsing line: " << line << std::endl;
+//             continue;
+//         }
+//         points.push_back(point);
+//     }
 
-    file.close();
-    return points;
-}
+//     file.close();
+//     return points;
+// }
 
 void loadWeldTraj(MatrixXd& weldTraj){
     /*
@@ -598,5 +598,46 @@ void loadM1(MatrixXd& M){
     row = M1_temp.size()/col;
     vector2Matrix(M, row, col, M1_temp);
 }
+
+void loadjnt2tool(MatrixXd& M){
+    YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
+    assert(config["J6_to_Tool_M"].Type() == YAML::NodeType::Sequence);
+    assert(config.Type() == YAML::NodeType::Map);
+    int cout = 1;
+    std::vector<double> j2tool;
+    // record data to vector
+    for (YAML::const_iterator it=config["J6_to_Tool_M"].begin(); it!=config["J6_to_Tool_M"].end(); ++it){
+        // the dependes on the DH parameters property, z offset is d entry of DH parameter 
+        // first dimension 
+        j2tool.push_back(it->as<double>());
+        cout++;
+    }
+    int row, col;
+    col = 4; // this is default format for transformation matrix 
+    row = j2tool.size()/col;
+    vector2Matrix(M, row, col, j2tool);
+}
+
+
+
+void loadjnt2laser(MatrixXd& M){
+    YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
+    assert(config["J6_to_Laser_M"].Type() == YAML::NodeType::Sequence);
+    assert(config.Type() == YAML::NodeType::Map);
+    int cout = 1;
+    std::vector<double> j2laser;
+    // record data to vector
+    for (YAML::const_iterator it=config["J6_to_Laser_M"].begin(); it!=config["J6_to_Laser_M"].end(); ++it){
+        // the dependes on the DH parameters property, z offset is d entry of DH parameter 
+        // first dimension 
+        j2laser.push_back(it->as<double>());
+        cout++;
+    }
+    int row, col;
+    col = 4; // this is default format for transformation matrix 
+    row = j2laser.size()/col;
+    vector2Matrix(M, row, col, j2laser);
+}
+
 
 #endif
