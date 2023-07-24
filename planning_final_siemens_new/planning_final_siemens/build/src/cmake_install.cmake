@@ -1,4 +1,4 @@
-# Install script for directory: /home/jiansong/planning_final_siemens/planning_final_siemens/src
+# Install script for directory: /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Debug")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -38,13 +38,13 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/home/jiansong/planning_final_siemens/planning_final_siemens/build/src/libquadprog.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src/libquadprog.a")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/QuadProg++" TYPE FILE FILES
-    "/home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/Array.hh"
-    "/home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/QuadProg++.hh"
+    "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/Array.hh"
+    "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/QuadProg++.hh"
     )
 endif()
 
@@ -52,7 +52,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cmake/quadprog-targets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cmake/quadprog-targets.cmake"
-         "/home/jiansong/planning_final_siemens/planning_final_siemens/build/src/CMakeFiles/Export/cmake/quadprog-targets.cmake")
+         "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src/CMakeFiles/Export/cmake/quadprog-targets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/cmake/quadprog-targets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -61,9 +61,9 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cmake" TYPE FILE FILES "/home/jiansong/planning_final_siemens/planning_final_siemens/build/src/CMakeFiles/Export/cmake/quadprog-targets.cmake")
-  if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Dd][Ee][Bb][Uu][Gg])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cmake" TYPE FILE FILES "/home/jiansong/planning_final_siemens/planning_final_siemens/build/src/CMakeFiles/Export/cmake/quadprog-targets-debug.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cmake" TYPE FILE FILES "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src/CMakeFiles/Export/cmake/quadprog-targets.cmake")
+  if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^()$")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/cmake" TYPE FILE FILES "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src/CMakeFiles/Export/cmake/quadprog-targets-noconfig.cmake")
   endif()
 endif()
 

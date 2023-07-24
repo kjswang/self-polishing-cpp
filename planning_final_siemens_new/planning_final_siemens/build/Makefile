@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jiansong/planning_final_siemens/planning_final_siemens
+CMAKE_SOURCE_DIR = /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jiansong/planning_final_siemens/planning_final_siemens/build
+CMAKE_BINARY_DIR = /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,9 +126,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jiansong/planning_final_siemens/planning_final_siemens/build/CMakeFiles /home/jiansong/planning_final_siemens/planning_final_siemens/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/CMakeFiles /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jiansong/planning_final_siemens/planning_final_siemens/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

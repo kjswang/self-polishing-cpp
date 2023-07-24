@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jiansong/planning_final_siemens/planning_final_siemens
+CMAKE_SOURCE_DIR = /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jiansong/planning_final_siemens/planning_final_siemens/build
+CMAKE_BINARY_DIR = /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build
 
 # Include any dependencies generated for this target.
 include src/CMakeFiles/quadprog.dir/depend.make
@@ -59,16 +59,16 @@ include src/CMakeFiles/quadprog.dir/flags.make
 
 src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o: src/CMakeFiles/quadprog.dir/flags.make
 src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o: ../src/lib/QP_lib/QuadProg++.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jiansong/planning_final_siemens/planning_final_siemens/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o"
-	cd /home/jiansong/planning_final_siemens/planning_final_siemens/build/src && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o -c /home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o"
+	cd /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src && /usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o -c /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc
 
 src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.i"
-	cd /home/jiansong/planning_final_siemens/planning_final_siemens/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc > CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.i
+	cd /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc > CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.i
 
 src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.s"
-	cd /home/jiansong/planning_final_siemens/planning_final_siemens/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jiansong/planning_final_siemens/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc -o CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.s
+	cd /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src && /usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc -o CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.s
 
 # Object files for target quadprog
 quadprog_OBJECTS = \
@@ -80,9 +80,9 @@ quadprog_EXTERNAL_OBJECTS =
 src/libquadprog.a: src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o
 src/libquadprog.a: src/CMakeFiles/quadprog.dir/build.make
 src/libquadprog.a: src/CMakeFiles/quadprog.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jiansong/planning_final_siemens/planning_final_siemens/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libquadprog.a"
-	cd /home/jiansong/planning_final_siemens/planning_final_siemens/build/src && $(CMAKE_COMMAND) -P CMakeFiles/quadprog.dir/cmake_clean_target.cmake
-	cd /home/jiansong/planning_final_siemens/planning_final_siemens/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/quadprog.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libquadprog.a"
+	cd /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src && $(CMAKE_COMMAND) -P CMakeFiles/quadprog.dir/cmake_clean_target.cmake
+	cd /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/quadprog.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 src/CMakeFiles/quadprog.dir/build: src/libquadprog.a
@@ -90,10 +90,10 @@ src/CMakeFiles/quadprog.dir/build: src/libquadprog.a
 .PHONY : src/CMakeFiles/quadprog.dir/build
 
 src/CMakeFiles/quadprog.dir/clean:
-	cd /home/jiansong/planning_final_siemens/planning_final_siemens/build/src && $(CMAKE_COMMAND) -P CMakeFiles/quadprog.dir/cmake_clean.cmake
+	cd /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src && $(CMAKE_COMMAND) -P CMakeFiles/quadprog.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/quadprog.dir/clean
 
 src/CMakeFiles/quadprog.dir/depend:
-	cd /home/jiansong/planning_final_siemens/planning_final_siemens/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jiansong/planning_final_siemens/planning_final_siemens /home/jiansong/planning_final_siemens/planning_final_siemens/src /home/jiansong/planning_final_siemens/planning_final_siemens/build /home/jiansong/planning_final_siemens/planning_final_siemens/build/src /home/jiansong/planning_final_siemens/planning_final_siemens/build/src/CMakeFiles/quadprog.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src/CMakeFiles/quadprog.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : src/CMakeFiles/quadprog.dir/depend
 

@@ -1689,6 +1689,8 @@ distance_constraint_3d.h
 ../src/lib/distance_constraint_3d.h
 cmath
 -
+safe_polishing.h
+../src/lib/safe_polishing.h
 
 ../src/lib/robot_property_eigen.h
 math.h
@@ -1744,21 +1746,21 @@ string
 vector
 -
 
-/home/jiansong/planning_final_siemens/planning_final_siemens/src/safe_polish_main.cpp
+/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/safe_polish_main.cpp
 iostream
 -
 Eigen/Dense
 -
 safe_polishing.h
-/home/jiansong/planning_final_siemens/planning_final_siemens/src/safe_polishing.h
+/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/safe_polishing.h
 CapPos.h
-/home/jiansong/planning_final_siemens/planning_final_siemens/src/CapPos.h
+/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/CapPos.h
 load_parameter.h
-/home/jiansong/planning_final_siemens/planning_final_siemens/src/load_parameter.h
+/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/load_parameter.h
 fstream
 -
 structure.h
-/home/jiansong/planning_final_siemens/planning_final_siemens/src/structure.h
+/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/structure.h
 global_var.h
-/home/jiansong/planning_final_siemens/planning_final_siemens/src/global_var.h
+/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/global_var.h
 
