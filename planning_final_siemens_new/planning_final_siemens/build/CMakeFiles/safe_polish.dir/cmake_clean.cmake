@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/safe_polish.dir/src/safe_polish_main.cpp.o"
+  "CMakeFiles/safe_polish.dir/src/safe_polish_main.cpp.o.d"
   "safe_polish"
   "safe_polish.pdb"
 )

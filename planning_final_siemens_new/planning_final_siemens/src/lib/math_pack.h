@@ -8,18 +8,50 @@
 */
 
 #include <Eigen/Dense>
+#include <Eigen/Core>
+#include <Eigen/LU>
 #include "structure.h"
 #include "QuadProg++.hh"
 // #include "robot_property_eigen.h"
 #include <cmath>
 #include <vector>
 #include <chrono> 
+//#include <libqhullcpp/Qhull.h>
 
+// #include "libqhullcpp/RboxPoints.h"
+// #include "libqhullcpp/QhullError.h"
+// #include "libqhullcpp/QhullQh.h"
+// #include "libqhullcpp/QhullFacet.h"
+// #include "libqhullcpp/QhullFacetList.h"
+// #include "libqhullcpp/QhullFacetSet.h"
+// #include "libqhullcpp/QhullLinkedList.h"
+// #include "libqhullcpp/QhullPoint.h"
+// #include "libqhullcpp/QhullUser.h"
+// #include "libqhullcpp/QhullVertex.h"
+// #include "libqhullcpp/QhullVertexSet.h"
+// #include "libqhullcpp/Qhull.h"
 
 using namespace Eigen;
 using namespace std;
-using namespace std::chrono;
-
+//using namespace std::chrono;
+// using orgQhull::Qhull;
+// using orgQhull::QhullError;
+// using orgQhull::QhullFacet;
+// using orgQhull::QhullFacetList;
+// using orgQhull::QhullFacetListIterator;
+// using orgQhull::QhullFacetSet;
+// using orgQhull::QhullFacetSetIterator;
+// using orgQhull::QhullPoint;
+// using orgQhull::QhullPoints;
+// using orgQhull::QhullPointsIterator;
+// using orgQhull::QhullQh;
+// using orgQhull::QhullUser;
+// using orgQhull::QhullVertex;
+// using orgQhull::QhullVertexList;
+// using orgQhull::QhullVertexListIterator;
+// using orgQhull::QhullVertexSet;
+// using orgQhull::QhullVertexSetIterator;
+// using orgQhull::RboxPoints;
 
 
 void quad2matrix(quadprogpp::Vector<double> u, MatrixXd& u_){
@@ -231,8 +263,11 @@ void setConstraint(quadprogpp::Matrix<double> &CI, quadprogpp::Vector<double> &c
 
     // f
     ci0.resize(Sn_);
-    for (int i = 0; i < Sn_; i++) 
+
+    for (int i = 0; i < Sn_; i++){
         ci0[i] = S(i,0);
+    }
+
 }
 
 void QPxset(quadprogpp::Vector<double> &x, const MatrixXd& xref){
@@ -316,9 +351,47 @@ MatrixXd cross_point(MatrixXd p1, MatrixXd p2, MatrixXd p3, MatrixXd p4){
     return pos;
 }
 
+MatrixXd calculateRowMeans(const MatrixXd& matrix) {
+    int numRows = matrix.rows();
+    int numCols = matrix.cols();
+
+    // Create a column vector to store the row-wise means
+    MatrixXd rowMeans(numRows, 1);
+
+    // Calculate the mean for each row
+    for (int i = 0; i < numRows; ++i) {
+        double sum = 0.0;
+        for (int j = 0; j < numCols; ++j) {
+            sum += matrix(i, j);
+        }
+        rowMeans(i, 0) = sum / numCols;
+    }
+
+    return rowMeans;
+}
+
+MatrixXd calculateColMeans(const MatrixXd& matrix) {
+    int numRows = matrix.rows();
+    int numCols = matrix.cols();
+
+    // Create a column vector to store the row-wise means
+    MatrixXd colMeans(1, numCols);
+
+    // Calculate the mean for each row
+    for (int i = 0; i < numCols; ++i) {
+        double sum = 0.0;
+        for (int j = 0; j < numRows; ++j) {
+            sum += matrix(j, i);
+        }
+        colMeans(0, i) = sum / numRows;
+    }
+
+    return colMeans;
+}
+
 // Function to calculate the mean of a matrix along a specific dimension
-VectorXd calculateMean(const MatrixXd& mat, int dim) {
-    return mat.col(dim).mean();
+MatrixXd calculateMean(const MatrixXd& mat) {
+    return mat.colwise().mean();
 }
 
 // Function to apply rotation transformation to a matrix
@@ -336,5 +409,43 @@ MatrixXd applyTranslation(const MatrixXd& matrix, const Vector3d& translation) {
     MatrixXd translatedMatrix = translationMatrix * matrix;
     return translatedMatrix;
 }
+
+MatrixXd mtx_translate(MatrixXd t){
+  MatrixXd T_t = MatrixXd::Identity(4,4);
+  if (t.rows() == 3 && t.cols() == 1) {
+        for (int i = 0; i < 3; ++i) {
+            T_t(i, 3) = t(i, 0);
+        }
+    } else {
+        std::cerr << "Error: 't' should be a 3x1 matrix (column vector)." << std::endl;
+    }
+    return T_t;
+}
+
+MatrixXd mtx_rotate(MatrixXd n, MatrixXd a){
+    double theta = n.row(0).norm();
+    MatrixXd T_t_a = mtx_translate(a);
+
+    MatrixXd k = n;
+    if (theta != 0){
+      k = n/theta;
+    }
+
+    double k_x = k(0,0);
+    double k_y = k(0,1);
+    double k_z = k(0,2);
+
+    MatrixXd K(3,3);
+    K << 0, -k_z, k_y,
+        k_z, 0, -k_x,
+        -k_y, k_x, 0;
+
+    MatrixXd R = MatrixXd::Identity(3,3) + sin(theta)*K + (1-cos(theta))*K*K;
+    MatrixXd T_r = MatrixXd::Identity(4,4);
+    T_r.block(0,0,3,3) = R;
+    T_r = mtx_translate(a) * T_r * mtx_translate(-a);
+    return T_r;
+}
+
 
 #endif

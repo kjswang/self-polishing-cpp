@@ -9,13 +9,12 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 #PROJECT(CRICO_CPP)
 project(QuadProg++ CXX)
 
+#set(CMAKE_CXX_STANDARD 14)
+
 INCLUDE_DIRECTORIES(src)
 INCLUDE_DIRECTORIES(src/lib)
 INCLUDE_DIRECTORIES(src/lib/QP_lib)
 INCLUDE_DIRECTORIES(src/include)
-
-
-
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_subdirectory(src)
@@ -27,5 +26,5 @@ add_executable(safe_polish src/safe_polish_main.cpp ${headers})
 set_target_properties(safe_polish PROPERTIES
   COMPILE_FLAGS "${yaml_cxx_flags}"
 )
-target_link_libraries(safe_polish quadprog Eigen3::Eigen yaml-cpp ${CMAKE_DL_LIBS})
+target_link_libraries(safe_polish quadprog Eigen3::Eigen qhullcpp qhullstatic_r yaml-cpp ${CMAKE_DL_LIBS})
 
