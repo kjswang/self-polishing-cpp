@@ -1,7 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o"
-  "libquadprog.a"
-  "libquadprog.pdb"
+  "CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o.d"
+  "build/libquadprog.a"
+  "build/libquadprog.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

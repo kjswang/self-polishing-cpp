@@ -1669,6 +1669,10 @@ yaml-cpp/yaml.h
 ../src/lib/math_pack.h
 Eigen/Dense
 -
+Eigen/Core
+-
+Eigen/LU
+-
 structure.h
 ../src/lib/structure.h
 QuadProg++.hh
@@ -1681,6 +1685,8 @@ chrono
 -
 
 ../src/lib/numerical_gradient.h
+safe_polishing.h
+../src/lib/safe_polishing.h
 Eigen/Dense
 -
 structure.h
@@ -1689,8 +1695,6 @@ distance_constraint_3d.h
 ../src/lib/distance_constraint_3d.h
 cmath
 -
-safe_polishing.h
-../src/lib/safe_polishing.h
 
 ../src/lib/robot_property_eigen.h
 math.h
@@ -1716,6 +1720,8 @@ customized_print.h
 load_parameter.h
 ../src/lib/load_parameter.h
 Eigen/Dense
+-
+Eigen/Core
 -
 robot_property_eigen.h
 ../src/lib/robot_property_eigen.h
@@ -1763,4 +1769,8 @@ structure.h
 /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/structure.h
 global_var.h
 /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/global_var.h
+libqhullcpp/Qhull.h
+-
+vector
+-
 

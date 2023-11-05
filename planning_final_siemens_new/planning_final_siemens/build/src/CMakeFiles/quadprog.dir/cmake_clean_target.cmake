@@ -1,3 +1,3 @@
 file(REMOVE_RECURSE
-  "libquadprog.a"
+  "build/libquadprog.a"
 )

@@ -201,6 +201,34 @@ void loadWeldIn(MatrixXd& weldin){
     weldin = weld_in_tmp;
 }
 
+void load_PC_idx(MatrixXd& PC_idx){
+    fstream file("parameter/PC_idx.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    MatrixXd row_tmp;
+    MatrixXd PC_idx_tmp;
+    int cnt =0;
+    while (std::getline(file,data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } // the first row 
+        else {
+            PC_idx_tmp = Vcat(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
+}
+
 void loadWeldOut(MatrixXd& weldout){
     fstream file("parameter/wp_setup/weld_out.txt");
     string data;
@@ -358,6 +386,8 @@ void loadAnchor(MatrixXd& point_anchor){
 
 void loadDHbase(MatrixXd &DH, MatrixXd &base){
     YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
+    //cout<< "Test:" << config["DH_params"].Type()<<endl;
+    //cout<< "Test:" << config.Type()<<endl;
     assert(config["DH_params"].Type() == YAML::NodeType::Sequence);
     assert(config.Type() == YAML::NodeType::Map);
 
@@ -564,9 +594,6 @@ int loadSafePolishingSetting(double& alphaY_limit, double& alphaZ_limit, double&
     wp_pos_init_default << (double) dicts["wp_pos_init_default"][0],
                   (double) dicts["wp_pos_init_default"][1],
                   (double) dicts["wp_pos_init_default"][2],
-                  (double) dicts["wp_pos_init_default"][3],
-                  (double) dicts["wp_pos_init_default"][4],
-                  (double) dicts["wp_pos_init_default"][5];
 
     // check the input parameter setting value
     cout << "alphaY_limit is :" << alphaY_limit << endl;
@@ -578,6 +605,7 @@ int loadSafePolishingSetting(double& alphaY_limit, double& alphaZ_limit, double&
     // abort();
     return 0;
 }
+
 
 
 void loadM1(MatrixXd& M){
@@ -638,6 +666,7 @@ void loadjnt2laser(MatrixXd& M){
     row = j2laser.size()/col;
     vector2Matrix(M, row, col, j2laser);
 }
+
 
 
 #endif

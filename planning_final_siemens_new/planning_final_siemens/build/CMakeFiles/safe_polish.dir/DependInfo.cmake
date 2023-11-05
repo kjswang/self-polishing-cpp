@@ -1,26 +1,18 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "CXX"
-  )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/safe_polish_main.cpp" "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/CMakeFiles/safe_polish.dir/src/safe_polish_main.cpp.o"
-  )
-set(CMAKE_CXX_COMPILER_ID "GNU")
-
-# The include file search paths:
-set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "../src"
-  "../src/lib"
-  "../src/lib/QP_lib"
-  "../src/include"
-  "/usr/include/eigen3"
   )
 
-# Targets to which this target links.
-set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src/CMakeFiles/quadprog.dir/DependInfo.cmake"
-  "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src/CMakeFiles/yaml-cpp.dir/DependInfo.cmake"
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/safe_polish_main.cpp" "CMakeFiles/safe_polish.dir/src/safe_polish_main.cpp.o" "gcc" "CMakeFiles/safe_polish.dir/src/safe_polish_main.cpp.o.d"
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.
