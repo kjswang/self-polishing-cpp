@@ -17,11 +17,13 @@
 #include <map>
 #include "math_pack.h"
 #include "yaml-cpp/yaml.h"  // IWYU pragma: keep
+#include <armadillo>
 // #include <typeinfo>
 // #include <Eigen/Dense>
 
 // using namespace Eigen;
 using namespace std;
+using namespace arma;
 
 
 void setMatrix(MatrixXd& row, string& data){
@@ -61,6 +63,29 @@ void setMatrix(MatrixXd& row, string& data){
     }
 }
 
+void setMatrix_arma(mat& row, string& data){
+    int cnt = 0;
+    vector<float> row_tmp;
+    string element = ""; 
+    for (auto x : data){
+        if (x == ','){    
+            row_tmp.push_back(stof(element));
+            element = "";
+            cnt++;
+        } 
+        else {
+            element = element + x; 
+        } 
+    }
+    row_tmp.push_back(stof(element));
+    row.resize(1, row_tmp.size());
+    cnt = 0;
+    for (vector<float>::const_iterator i = row_tmp.begin(); i != row_tmp.end(); ++i){
+        row(0, cnt) = double(*i);
+        cnt++;
+    }
+}
+
 void loadWeldLeft(MatrixXd& weldleft){
     fstream file("parameter/wp_setup/weld_left.txt");
     string data;
@@ -87,6 +112,27 @@ void loadWeldLeft(MatrixXd& weldleft){
         }
     }
     weldleft = weld_left_tmp;
+}
+
+void loadWeldLeft_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/weld_left.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
 }
 
 void loadWeldRight(MatrixXd& weldright){
@@ -117,6 +163,27 @@ void loadWeldRight(MatrixXd& weldright){
     weldright = weld_right_tmp;
 }
 
+void loadWeldRight_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/weld_right.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
+}
+
 void loadWeldTop(MatrixXd& weldtop){
     fstream file("parameter/wp_setup/weld_top.txt");
     string data;
@@ -143,6 +210,27 @@ void loadWeldTop(MatrixXd& weldtop){
         }
     }
     weldtop = weld_top_tmp;
+}
+
+void loadWeldTop_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/weld_top.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
 }
 
 void loadWeldBottom(MatrixXd& weldbottom){
@@ -173,6 +261,28 @@ void loadWeldBottom(MatrixXd& weldbottom){
     weldbottom = weld_bottom_tmp;
 }
 
+void loadWeldBottom_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/weld_bottom.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
+}
+
+
 void loadWeldIn(MatrixXd& weldin){
     fstream file("parameter/wp_setup/weld_in.txt");
     string data;
@@ -199,6 +309,27 @@ void loadWeldIn(MatrixXd& weldin){
         }
     }
     weldin = weld_in_tmp;
+}
+
+void loadWeldIn_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/weld_in.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
 }
 
 void load_PC_idx(MatrixXd& PC_idx){
@@ -229,6 +360,28 @@ void load_PC_idx(MatrixXd& PC_idx){
     PC_idx = PC_idx_tmp;
 }
 
+void load_PC_idx_arma(mat& PC_idx){
+    ifstream file("parameter/PC_idx.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
+}
+
+
 void loadWeldOut(MatrixXd& weldout){
     fstream file("parameter/wp_setup/weld_out.txt");
     string data;
@@ -256,6 +409,29 @@ void loadWeldOut(MatrixXd& weldout){
     }
     weldout = weld_out_tmp;
 }
+
+
+void loadWeldOut_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/weld_out.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
+}
+
 
 void loadplanePoints(MatrixXd& planePoints){
     ifstream file("parameter/wp_setup/planePoints.txt");
@@ -286,6 +462,27 @@ void loadplanePoints(MatrixXd& planePoints){
     planePoints = pp_tmp;
 }
 
+void loadplanePoints_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/planePoints.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
+}
+
 void loadabc(MatrixXd& abc){
     ifstream file("parameter/wp_setup/abc.txt");
     string data;
@@ -313,6 +510,27 @@ void loadabc(MatrixXd& abc){
     }
     // set the original weldTraj
     abc = abc_tmp;
+}
+
+void loadabc_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/abc.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
 }
 
 void loadArr(MatrixXd& weldTraj){
@@ -384,6 +602,27 @@ void loadAnchor(MatrixXd& point_anchor){
     point_anchor = pa_tmp;
 }
 
+void loadAnchor_arma(mat& PC_idx){
+    ifstream file("parameter/wp_setup/point_anchor.txt");
+    string data;
+    mat row_tmp;
+    mat PC_idx_tmp;
+    int cnt = 0;
+    while (getline(file, data)) {
+        if (data.length() == 0)
+            continue;
+        setMatrix_arma(row_tmp, data);
+        if (cnt == 0){
+            PC_idx_tmp = row_tmp;
+            cnt++;
+        } else {
+            PC_idx_tmp = join_cols(PC_idx_tmp, row_tmp);
+            cnt++;
+        }
+    }
+    PC_idx = PC_idx_tmp;
+}
+
 void loadDHbase(MatrixXd &DH, MatrixXd &base){
     YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
     //cout<< "Test:" << config["DH_params"].Type()<<endl;
@@ -419,6 +658,40 @@ void loadDHbase(MatrixXd &DH, MatrixXd &base){
     col = 4; // this is default format for DH 
     row = remain_DH.size()/col;
     vector2Matrix(DH, row, col, remain_DH);
+}
+
+void loadDHbase_arma(arma::mat& DH, arma::mat& base) {
+    YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
+    assert(config["DH_params"].Type() == YAML::NodeType::Sequence);
+    assert(config.Type() == YAML::NodeType::Map);
+
+    int cout = 1;
+    std::vector<double> remain_DH;
+
+    // Initialize base
+    base.resize(3, 1);
+    base.fill(0.0); // Initialize with zeros
+    for (YAML::const_iterator it = config["DH_params"].begin(); it != config["DH_params"].end(); ++it) {
+        if (cout == 2) {
+            base(2, 0) = it->as<double>(); // Set the z offset
+        }
+        if (cout >= 5) {
+            remain_DH.push_back(it->as<double>());
+        }
+        cout++;
+    }
+
+    int row, col;
+    col = 4; // This is the default format for DH parameters
+    row = remain_DH.size() / col;
+
+    // Convert vector to Armadillo matrix
+    DH = arma::mat(row, col);
+    for (int r = 0; r < row; ++r) {
+        for (int c = 0; c < col; ++c) {
+            DH(r, c) = remain_DH[r * col + c];
+        }
+    }
 }
 
 void setInputField(inputfield& line, string& data){
@@ -466,29 +739,6 @@ struct Point{
 float x, y, z;
 };
 
-// std::vector<Point> readXYZFile(const std::string& filename) {
-//     std::vector<Point> points;
-//     std::ifstream file(filename);
-
-//     if (!file.is_open()) {
-//         std::cerr << "Error opening file:" << filename << std::endl;
-//         return points;
-//     }
-
-//     std::string line;
-//     while (std::getline(file,line)) {
-//         Point point;
-//         std::istringstream iss(line);
-//         if(!(iss >> point.x >> point.y >> point.z)) {
-//             std::cerr << "Error parsing line: " << line << std::endl;
-//             continue;
-//         }
-//         points.push_back(point);
-//     }
-
-//     file.close();
-//     return points;
-// }
 
 void loadWeldTraj(MatrixXd& weldTraj){
     /*
@@ -528,6 +778,42 @@ void loadWeldTraj(MatrixXd& weldTraj){
     // cout << weldTraj << endl;
 }
 
+void loadWeldTraj_arma(mat& weldTraj){
+    /*
+    * load the weld points trajectories 
+    * weldTraj is stored as double type matrix 
+    * size: 3*n (n is the weld point number)
+    * input format: n*3 (n is weld point number, 3 is x,y,z in sequence)
+    */
+    // ifstream file("src/pointcloud/weldTraj.txt");
+    fstream file("parameter/wp_setup/weldTraj.txt");
+    string data;
+    mat row_tmp;
+    mat weldTraj_tmp;
+    int cnt = 0;
+    while (std::getline(file, data)) {
+        // skip the empty line 
+        if (data.length()==0)
+            continue;
+        // customized matrix setting
+        // get the matrix elements in string
+        setMatrix_arma(row_tmp, data);
+        // concantenate current row with old weld traj
+        if (cnt == 0){
+            weldTraj_tmp = row_tmp;
+            cnt++;
+        } // the first row  
+        else{
+            weldTraj_tmp = join_cols(weldTraj_tmp, row_tmp);
+            cnt++;
+        }  
+    }
+    // set the original weldTraj
+    weldTraj = weldTraj_tmp;
+    // cout << "loaded weldTraj points are:" << endl;
+    // cout << weldTraj << endl;
+}
+
 void loadWorkpieceSetting(MatrixXd& abc,  MatrixXd& planePoints, MatrixXd& point_anchor, 
         MatrixXd& weld_bottom, MatrixXd& weld_in, MatrixXd& weld_left, MatrixXd& weld_out, MatrixXd& weld_right, MatrixXd& weld_top){
     loadabc(abc);
@@ -539,6 +825,19 @@ void loadWorkpieceSetting(MatrixXd& abc,  MatrixXd& planePoints, MatrixXd& point
     loadWeldOut(weld_out);
     loadWeldRight(weld_right);
     loadWeldTop(weld_top);
+}
+
+void loadWorkpieceSetting_arma(mat& abc,  mat& planePoints, mat& point_anchor, 
+        mat& weld_bottom, mat& weld_in, mat& weld_left, mat& weld_out, mat& weld_right, mat& weld_top){
+    loadabc_arma(abc);
+    loadAnchor_arma(point_anchor);
+    loadplanePoints_arma(planePoints);
+    loadWeldIn_arma(weld_in);
+    loadWeldBottom_arma(weld_bottom);
+    loadWeldLeft_arma(weld_left);
+    loadWeldOut_arma(weld_out);
+    loadWeldRight_arma(weld_right);
+    loadWeldTop_arma(weld_top);
 }
 
 
@@ -570,19 +869,6 @@ int loadSafePolishingSetting(double& alphaY_limit, double& alphaZ_limit, double&
     nstep2 = (int) dicts["nstep2"][0];
     nwait = (int) dicts["nwait"][0];
     thres = (double) dicts["thres"][0];
-    // pos_idle << (double) dicts["pos_idle"][0],
-    //             (double) dicts["pos_idle"][1],
-    //             (double) dicts["pos_idle"][2],
-    //             (double) dicts["pos_idle"][3],
-    //             (double) dicts["pos_idle"][4],
-    //             (double) dicts["pos_idle"][5];
-
-    // pos_middle << (double) dicts["pos_middle"][0],
-    //               (double) dicts["pos_middle"][1],
-    //               (double) dicts["pos_middle"][2],
-    //               (double) dicts["pos_middle"][3],
-    //               (double) dicts["pos_middle"][4],
-    //               (double) dicts["pos_middle"][5];
 
     theta_init_default << (double) dicts["theta_init_default"][0],
                   (double) dicts["theta_init_default"][1],
@@ -606,6 +892,56 @@ int loadSafePolishingSetting(double& alphaY_limit, double& alphaZ_limit, double&
     return 0;
 }
 
+int loadSafePolishingSetting_arma(double& alphaY_limit, double& alphaZ_limit, double& thres, int& nstep1, int& nstep2, int& nwait, mat& theta_init_default, mat& wp_pos_init_default){
+    ifstream file("parameter/parameters.txt");
+    string data;
+    inputfield line;
+    map<string, vector<float> > dicts;
+    while (std::getline(file, data)) {
+        // cout << data << "\n";
+        // clear line 
+        line.field.clear();
+        line.elements.clear();
+        
+        // customized parameter setting
+        // get the elements in string
+        // the first elements is name field
+        setInputField(line, data);
+
+        // feed line into dictionary 
+        dicts.insert(pair<string, vector<float> >(line.field, line.elements));
+    }
+    // set the input value
+    alphaY_limit = (double) dicts["alphaY_limit"][0];
+    alphaZ_limit = (double) dicts["alphaZ_limit"][0];
+    // theta = (double) dicts["theta"][0];
+    // start2exe = (int) dicts["start2exe"][0];
+    nstep1 = (int) dicts["nstep1"][0];
+    nstep2 = (int) dicts["nstep2"][0];
+    nwait = (int) dicts["nwait"][0];
+    thres = (double) dicts["thres"][0];
+
+    theta_init_default << (double) dicts["theta_init_default"][0] << endr
+                  << (double) dicts["theta_init_default"][1] << endr
+                  << (double) dicts["theta_init_default"][2] << endr
+                  << (double) dicts["theta_init_default"][3] << endr
+                  << (double) dicts["theta_init_default"][4] << endr 
+                  << (double) dicts["theta_init_default"][5] << endr;
+
+    wp_pos_init_default << (double) dicts["wp_pos_init_default"][0] << endr
+                  << (double) dicts["wp_pos_init_default"][1] << endr
+                  << (double) dicts["wp_pos_init_default"][2] << endr;
+
+    // check the input parameter setting value
+    cout << "alphaY_limit is :" << alphaY_limit << endl;
+    cout << "alphaZ_limit is :" << alphaZ_limit << endl;
+    cout << "theta_init_default is :\n" << theta_init_default << endl;
+    cout << "wp_pos_init_default is :\n" << wp_pos_init_default << endl;
+    // set the input value
+    cout << "all seems good" << endl;
+    // abort();
+    return 0;
+}
 
 void loadM1(MatrixXd& M){
     YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
@@ -626,6 +962,35 @@ void loadM1(MatrixXd& M){
     vector2Matrix(M, row, col, M1_temp);
 }
 
+void loadM1_arma(arma::mat& M) {
+    YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
+    assert(config["M1"].Type() == YAML::NodeType::Sequence);
+    assert(config.Type() == YAML::NodeType::Map);
+    
+    int cout = 1;
+    std::vector<double> M1_temp;
+
+    // Record data to vector
+    for (YAML::const_iterator it = config["M1"].begin(); it != config["M1"].end(); ++it) {
+        // The depends on the DH parameters property, z offset is d entry of DH parameter
+        // First dimension
+        M1_temp.push_back(it->as<double>());
+        cout++;
+    }
+
+    int row, col;
+    col = 4; // This is the default format for a transformation matrix
+    row = M1_temp.size() / col;
+
+    // Convert vector to Armadillo matrix
+    M = arma::mat(row, col);
+    for (int r = 0; r < row; ++r) {
+        for (int c = 0; c < col; ++c) {
+            M(r, c) = M1_temp[r * col + c];
+        }
+    }
+}
+
 void loadjnt2tool(MatrixXd& M){
     YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
     assert(config["J6_to_Tool_M"].Type() == YAML::NodeType::Sequence);
@@ -643,6 +1008,35 @@ void loadjnt2tool(MatrixXd& M){
     col = 4; // this is default format for transformation matrix 
     row = j2tool.size()/col;
     vector2Matrix(M, row, col, j2tool);
+}
+
+void loadjnt2tool_arma(arma::mat& M) {
+    YAML::Node config = YAML::LoadFile("parameter/Kinematics.yaml");
+    assert(config["J6_to_Tool_M"].Type() == YAML::NodeType::Sequence);
+    assert(config.Type() == YAML::NodeType::Map);
+    
+    int cout = 1;
+    std::vector<double> j2tool;
+
+    // Record data to vector
+    for (YAML::const_iterator it = config["J6_to_Tool_M"].begin(); it != config["J6_to_Tool_M"].end(); ++it) {
+        // The depends on the DH parameters property, z offset is d entry of DH parameter
+        // First dimension
+        j2tool.push_back(it->as<double>());
+        cout++;
+    }
+
+    int row, col;
+    col = 4; // This is the default format for a transformation matrix
+    row = j2tool.size() / col;
+
+    // Convert vector to Armadillo matrix
+    M = arma::mat(row, col);
+    for (int r = 0; r < row; ++r) {
+        for (int c = 0; c < col; ++c) {
+            M(r, c) = j2tool[r * col + c];
+        }
+    }
 }
 
 
@@ -665,6 +1059,7 @@ void loadjnt2laser(MatrixXd& M){
     row = j2laser.size()/col;
     vector2Matrix(M, row, col, j2laser);
 }
+
 
 
 #endif

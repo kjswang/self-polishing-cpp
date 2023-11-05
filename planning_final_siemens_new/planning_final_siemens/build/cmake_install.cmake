@@ -1,4 +1,4 @@
-# Install script for directory: /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens
+# Install script for directory: /home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/src/cmake_install.cmake")
+  include("/home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/build/src/cmake_install.cmake")
 
 endif()
 
@@ -56,5 +56,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

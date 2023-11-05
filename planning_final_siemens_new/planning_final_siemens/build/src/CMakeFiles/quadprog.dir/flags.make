@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src -I/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib -I/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib -I/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/include
+CXX_INCLUDES = -I/home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/src -I/home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/src/fmincon -I/home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/src/lib -I/home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib -I/home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/src/include -I/usr/local/include/Eigen
 
 CXX_FLAGS = -g -fPIC
 

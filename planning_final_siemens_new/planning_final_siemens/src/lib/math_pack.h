@@ -12,49 +12,25 @@
 #include <Eigen/LU>
 #include "structure.h"
 #include "QuadProg++.hh"
-// #include "robot_property_eigen.h"
 #include <cmath>
 #include <vector>
+#include <armadillo>
 #include <chrono> 
-//#include <libqhullcpp/Qhull.h>
 
-// #include "libqhullcpp/RboxPoints.h"
-// #include "libqhullcpp/QhullError.h"
-// #include "libqhullcpp/QhullQh.h"
-// #include "libqhullcpp/QhullFacet.h"
-// #include "libqhullcpp/QhullFacetList.h"
-// #include "libqhullcpp/QhullFacetSet.h"
-// #include "libqhullcpp/QhullLinkedList.h"
-// #include "libqhullcpp/QhullPoint.h"
-// #include "libqhullcpp/QhullUser.h"
-// #include "libqhullcpp/QhullVertex.h"
-// #include "libqhullcpp/QhullVertexSet.h"
-// #include "libqhullcpp/Qhull.h"
-
+using namespace arma;
 using namespace Eigen;
 using namespace std;
-//using namespace std::chrono;
-// using orgQhull::Qhull;
-// using orgQhull::QhullError;
-// using orgQhull::QhullFacet;
-// using orgQhull::QhullFacetList;
-// using orgQhull::QhullFacetListIterator;
-// using orgQhull::QhullFacetSet;
-// using orgQhull::QhullFacetSetIterator;
-// using orgQhull::QhullPoint;
-// using orgQhull::QhullPoints;
-// using orgQhull::QhullPointsIterator;
-// using orgQhull::QhullQh;
-// using orgQhull::QhullUser;
-// using orgQhull::QhullVertex;
-// using orgQhull::QhullVertexList;
-// using orgQhull::QhullVertexListIterator;
-// using orgQhull::QhullVertexSet;
-// using orgQhull::QhullVertexSetIterator;
-// using orgQhull::RboxPoints;
 
 
 void quad2matrix(quadprogpp::Vector<double> u, MatrixXd& u_){
+    int row = u.size();
+    u_.resize(row,1);
+    for(int i=0; i<row; ++i){
+        u_(i,0) = u[i];
+    }
+} 
+
+void quad2matrix_arma(quadprogpp::Vector<double> u, mat& u_){
     int row = u.size();
     u_.resize(row,1);
     for(int i=0; i<row; ++i){
@@ -249,6 +225,24 @@ void setObjValue(quadprogpp::Matrix<double> &G, quadprogpp::Vector<double> &g0, 
         
 }
 
+void setObjValue_arma(quadprogpp::Matrix<double> &G, quadprogpp::Vector<double> &g0, const arma::mat& HT, const arma::mat& f) {
+    int Hn_, fn_;
+    Hn_ = HT.n_rows;
+    fn_ = f.n_rows;
+
+    // Hfull
+    G.resize(Hn_, Hn_);
+    for (int i = 0; i < Hn_; i++)
+        for (int j = 0; j < Hn_; j++)
+            G[i][j] = HT(i, j);
+
+    // f
+    g0.resize(fn_);
+    for (int i = 0; i < fn_; i++) {
+        g0[i] = f(i, 0);
+    }
+}
+
 void setConstraint(quadprogpp::Matrix<double> &CI, quadprogpp::Vector<double> &ci0, const MatrixXd& LT, const MatrixXd& S){
 /* push Lfull_ to qp solver
    be careful that:
@@ -270,8 +264,35 @@ void setConstraint(quadprogpp::Matrix<double> &CI, quadprogpp::Vector<double> &c
 
 }
 
+void setConstraint_arma(quadprogpp::Matrix<double> &CI, quadprogpp::Vector<double> &ci0, const mat& LT, const mat& S){
+/* push Lfull_ to qp solver
+   be careful that:
+   according to QP solver, CI should be -Lfull_*/
+    int Lnr_ = LT.n_rows;
+    int Lnc_ = LT.n_cols;
+    int Sn_ = S.n_rows;
+    CI.resize(Lnr_, Lnc_);
+    for (int i = 0; i < Lnr_; i++) 
+        for (int j = 0; j < Lnc_; j++)
+            CI[i][j] = LT(i,j);
+
+    // f
+    ci0.resize(Sn_);
+
+    for (int i = 0; i < Sn_; i++){
+        ci0[i] = S(i,0);
+    }
+
+}
+
 void QPxset(quadprogpp::Vector<double> &x, const MatrixXd& xref){
     x.resize(xref.rows());
+    for (int i = 0; i < xref.size(); i++) 
+        x[i] = xref(i,0);
+}
+
+void QPxset_arma(quadprogpp::Vector<double> &x, const mat& xref){
+    x.resize(xref.n_rows);
     for (int i = 0; i < xref.size(); i++) 
         x[i] = xref(i,0);
 }
@@ -422,6 +443,14 @@ MatrixXd mtx_translate(MatrixXd t){
     return T_t;
 }
 
+arma::mat mtx_translate_arma(const arma::vec& t) {
+    arma::mat T_t = arma::eye<arma::mat>(4, 4);
+    for (int i = 0; i < 3; ++i) {
+        T_t(i, 3) = t(i);
+    }
+    return T_t;
+}
+
 MatrixXd mtx_rotate(MatrixXd n, MatrixXd a){
     double theta = n.row(0).norm();
     MatrixXd T_t_a = mtx_translate(a);
@@ -447,5 +476,40 @@ MatrixXd mtx_rotate(MatrixXd n, MatrixXd a){
     return T_r;
 }
 
+arma::mat mtx_rotate_arma(const arma::mat& n, const arma::mat& a) {
+    double theta = arma::norm(n.row(0));
+    arma::mat T_t_a = mtx_translate_arma(a);
+
+    arma::mat k = n;
+    if (theta != 0) {
+        k /= theta;
+    }
+
+    double k_x = k(0, 0);
+    double k_y = k(0, 1);
+    double k_z = k(0, 2);
+
+    arma::mat K(3, 3);
+    K << 0 << -k_z << k_y << arma::endr
+      << k_z << 0 << -k_x << arma::endr
+      << -k_y << k_x << 0 << arma::endr;
+
+    arma::mat R = arma::eye<arma::mat>(3, 3) + std::sin(theta) * K + (1 - std::cos(theta)) * K * K;
+    arma::mat T_r = arma::eye<arma::mat>(4, 4);
+    T_r.submat(0, 0, 2, 2) = R;
+    T_r = mtx_translate_arma(a) * T_r * mtx_translate_arma(-a);
+    return T_r;
+}
+
+
+mat eigen2arma(MatrixXd eigenmat){
+  mat armamat(eigenmat.rows(),eigenmat.cols());
+  for (int i = 0; i < eigenmat.rows(); ++i) {
+    for (int j = 0; j < eigenmat.cols(); ++j) {
+        armamat(i, j) = eigenmat(i, j);
+    }
+}
+  return armamat;
+}
 
 #endif

@@ -1,5 +1,5 @@
 src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o: \
- /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc \
+ /home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/QuadProg++.cc \
  /usr/include/stdc-predef.h /usr/include/c++/9/iostream \
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/9/bits/os_defines.h \
@@ -153,8 +153,8 @@ src/CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o: \
  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
  /usr/include/c++/9/sstream /usr/include/c++/9/bits/sstream.tcc \
- /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/QuadProg++.hh \
- /home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/Array.hh \
+ /home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/QuadProg++.hh \
+ /home/jiansong/HTPC_arma/planning_final_siemens_new/planning_final_siemens/src/lib/QP_lib/Array.hh \
  /usr/include/c++/9/set /usr/include/c++/9/bits/stl_tree.h \
  /usr/include/c++/9/ext/aligned_buffer.h \
  /usr/include/c++/9/bits/stl_set.h /usr/include/c++/9/bits/stl_multiset.h \

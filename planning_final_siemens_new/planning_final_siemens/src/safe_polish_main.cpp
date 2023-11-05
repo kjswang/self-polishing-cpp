@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <Eigen/Dense>
+#include <armadillo>
 
 #include "safe_polishing.h"
 #include "CapPos.h"
@@ -22,6 +23,7 @@
 #include "global_var.h"
 #include <libqhullcpp/Qhull.h>
 #include <vector>
+
 
 const static IOFormat txtFormat(StreamPrecision, DontAlignCols, ",", "\n");
 
@@ -39,12 +41,20 @@ MatrixXd theta_ini_polish(6,1);
 MatrixXd theta_ini_measure(6,1);
 MatrixXd Msix2tool(4,4);
 
+mat theta_ini_polish_arma(6,1);
+mat theta_ini_measure_arma(6,1);
+mat Msix2tool_arma(4,4);
+mat fmincon_x;
+int ft;
 
 int main(int argc, char **argv){
 
     loadjnt2tool(Msix2tool);
     planner = 1;
-    
+    loadjnt2tool_arma(Msix2tool_arma);
+    fmincon_x.load("fmincon_x.csv", arma::csv_ascii);
+    cout << fmincon_x << endl;
+    ft = 0;
     safe_polish(start2exe_traj, execution_traj, exit_traj);
 
 

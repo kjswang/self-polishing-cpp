@@ -164,6 +164,22 @@ double distLinSeg2PC(MatrixXd P, MatrixXd Q, MatrixXd PC){
     return dist.minCoeff();
 }
 
+double distLinSeg2PC_arma(mat P, mat Q, mat PC) {
+    arma::mat PQ = P - Q;
+    arma::mat PC_Q = PC.each_col() - Q;
+
+    if (arma::norm(PQ) == 0) {
+        arma::mat norms = arma::sqrt(arma::sum(arma::square(PC_Q), 0));
+      return norms.min();
+    }
+
+    arma::mat T = (arma::trans(PC_Q) * PQ) / arma::norm(arma::trans(PQ) * PQ);
+    T.elem(arma::find(T < 0)).zeros();
+    T.elem(arma::find(T > 1)).ones();
+
+    arma::mat norms = arma::sqrt(arma::sum(arma::square(PC_Q - PQ*T.t()), 0));
+    return norms.min();
+}
 
 
 double dist_arm_PC(MatrixXd theta, MatrixXd DH, MatrixXd base, capsule cap[], tool tl, MatrixXd PC, int check = 0){
@@ -187,6 +203,7 @@ double dist_arm_PC(MatrixXd theta, MatrixXd DH, MatrixXd base, capsule cap[], to
         point2 = pos[i].p2;
         radius = pos[i].r;
         dist = distLinSeg2PC(point1, point2, PC);
+        //dist = distLinSeg2PC_arma(point1_arma, point2_arma, PC_arma);
         dist -= radius;
         distList[i] = dist;
     }
@@ -194,37 +211,29 @@ double dist_arm_PC(MatrixXd theta, MatrixXd DH, MatrixXd base, capsule cap[], to
     return d;
 }
 
-
-
-double dist_arm_PC_WP(MatrixXd x0, MatrixXd DH, MatrixXd base, capsule cap[], tool tl, MatrixXd PC, int check = 0){
-    MatrixXd theta, wp_pos;
-    MatrixXd zero_tmp(1,1);
-    zero_tmp(0,0) = 0;
-    theta = x0.block(0,0,6,x0.cols());
-    wp_pos = Vcat(zero_tmp,x0.row(6));
-    wp_pos = Vcat(wp_pos,x0.row(7));
-
-    int nlink = DH.rows();
-    DH.block(0,0,nlink,1) = theta;
+double dist_arm_PC_arma(mat theta, mat DH, mat base, capsule_arma cap[], tool_arma tl, mat PC, int check = 0){
+    
+    int nlink = DH.n_rows;
+    DH.col(0) = theta;
     double d = INFINITY;
 
-    lineseg* pos = CapPos_real(base, DH, cap, tl);
+    // lineseg* pos = CapPos_real(base, DH, cap, tl);
+    inplace_trans(PC);
 
-    MatrixXd point1, point2;
-    double dist,radius;
-    vector<double> distList(sizeof(pos));
-    
+    lineseg_arma* pos = CapPos_real_arma(base, DH, cap, tl);
+
+    //CapPos(base, DH, cap, M, pos);
+    mat point1, point2;
+    double dist, radius;
+    vector<double> distList;
     for (int i = 0; i < sizeof(pos); i++) {
         point1 = pos[i].p1;
         point2 = pos[i].p2;
         radius = pos[i].r;
-
-        dist = distLinSeg2PC(point1, point2, PC.transpose());
+        dist = distLinSeg2PC_arma(point1, point2, PC);
         dist -= radius;
-
-        distList[i] = dist;
+        distList.push_back(dist);
     }
-
     d = *std::min_element(distList.begin(),distList.end());
     return d;
 }
@@ -244,7 +253,6 @@ MatrixXd convhulln(MatrixXd points){
     myqhull.runQhull("m", 3, vectorData.size() / 3, vectorData.data(), "Qt");
     QhullFacetList facets= myqhull.facetList();
     std::vector<std::vector<int> > facetVertices;
-    cout << "num_facets" << myqhull.facetCount() << endl;
     // for(QhullFacet f : facets)
     QhullFacetListIterator j(facets);
     while(j.hasNext()){
@@ -283,37 +291,59 @@ MatrixXd convhulln(MatrixXd points){
     return matrix;
 }
 
-bool inhull(const Eigen::MatrixXd &testpoints, const Eigen::MatrixXd &hullpoints) {
-    // const auto num_hull_points = hullpoints.rows();
-    // const auto num_test_points = testpoints.rows();
-    // const auto dim = hullpoints.cols();
-    // Eigen::MatrixXd A(num_hull_points + dim, dim);
-    // A.block(0, 0, num_hull_points, dim) = hullpoints;
-    // A.block(num_hull_points, 0, dim, dim) = Eigen::MatrixXd::Identity(dim, dim);
-    // Eigen::VectorXd b(num_hull_points + dim);
-    // b.head(num_hull_points) = Eigen::VectorXd::Ones(num_hull_points);
-    // b.tail(dim) = Eigen::VectorXd::Zero(dim);
-    // for (int i = 0; i < num_test_points; ++i) {
-    //     const auto point = testpoints.row(i);
-    //     if ((A * point.transpose() - b).minCoeff() > 0) {
-    //         return false;
-    //     }
-    // }
+mat convhulln_arma(mat points){
+    vector<double> vectorData;
+    for (int i = 0; i < points.n_rows; ++i) {
+        for (int j = 0; j < points.n_cols; ++j) {
+            vectorData.push_back(points(i, j));
+        }
+    }
 
-    // cout << fixed << setprecision(6);
-    // cout << "hullpoints" << hullpoints << endl;
-    // MatrixXd temp_mat(11,3);
-    // temp_mat << 0.0, 0.0, 0.0,
-    //             1.0, 0.0, 0.0,
-    //             0.0, 1.0, 0.0,
-    //             1.0, 1.0, 0.0,
-    //             0.0, 0.0, 1.0,
-    //             1.0, 0.0, 1.0,
-    //             0.0, 1.0, 1.0,
-    //             1.0, 1.0, 1.0,
-    //             1.0, 1.0, 1.2,
-    //             1.0, 1.0, 1.200001,
-    //             1.00001, 1.00001, 0.5;
+    Qhull myqhull;
+    // myqhull.runQhull("m", 3, points.size() / 3, points.data(), "Qt Qa Qc Qi Qw Qs Q0 Q3 Q4 Q6 Q12");
+    myqhull.runQhull("m", 3, vectorData.size() / 3, vectorData.data(), "Qt");
+    QhullFacetList facets= myqhull.facetList();
+    std::vector<std::vector<int> > facetVertices;
+    // for(QhullFacet f : facets)
+    QhullFacetListIterator j(facets);
+    while(j.hasNext()){
+        QhullFacet f= j.next();
+        std::vector<int> vertices;
+        if(!f.isGood()){
+            // ignore facet
+        }else if(!f.isTopOrient() && f.isSimplicial()){ /* orient the vertices like option 'o' */
+            QhullVertexSet vs= f.vertices();
+            vertices.push_back(vs[1].point().id());
+            vertices.push_back(vs[0].point().id());
+            for(int i= 2; i<(int)vs.size(); ++i){
+                vertices.push_back(vs[i].point().id());
+            }
+            facetVertices.push_back(vertices);
+        }else{  /* note: for non-simplicial facets, this code does not duplicate option 'o', see qh_facet3vertex and qh_printfacetNvertex_nonsimplicial */
+            // for(QhullVertex vertex : f.vertices()){
+
+            QhullVertexSetIterator k(f.vertices());
+            while(k.hasNext()){
+                QhullVertex vertex= k.next();
+                QhullPoint p= vertex.point();
+                vertices.push_back(p.id());
+            }
+            facetVertices.push_back(vertices);
+        }
+    }
+    int numRows = facetVertices.size();
+    mat matrix(numRows, 3);
+
+    for (int i = 0; i < numRows; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            matrix(i, j) = facetVertices[i][j];
+        }
+    }
+    return matrix;
+}
+
+bool inhull(const Eigen::MatrixXd &testpoints, const Eigen::MatrixXd &hullpoints) {
+
     MatrixXd tess = convhulln(hullpoints);
     int nt, c;
     nt = tess.rows();
@@ -321,10 +351,6 @@ bool inhull(const Eigen::MatrixXd &testpoints, const Eigen::MatrixXd &hullpoints
     double tol = 0.0;
     MatrixXd ab(nt, 3);
 
-    // Eigen::MatrixXd tessIndices1 = hullpoints.row(tess.col(0)).array();  // Extract rows using indices
-    // Eigen::MatrixXd tessIndices2 = hullpoints.row(tess.col(1)).array();
-
-    // ab = tessIndices1 - tessIndices2;
     for (int i=0; i<nt; i++){
       int index1 = tess(i,0);
       int index2 = tess(i,1);
@@ -333,11 +359,6 @@ bool inhull(const Eigen::MatrixXd &testpoints, const Eigen::MatrixXd &hullpoints
     }
 
     MatrixXd ac(nt,3);
-    // for (int i=0; i<nt; i++){
-    //   int index1 = tess(i,0);
-    //   int index2 = tess(i,2);
-    //   ac.row(i) = hullpoints.row(index1) - hullpoints.row(index2);
-    // }
 
     for (int i = 0; i < nt; ++i) {
         int index3 = tess(i, 0);
@@ -389,5 +410,46 @@ bool inhull(const Eigen::MatrixXd &testpoints, const Eigen::MatrixXd &hullpoints
     return condition_met(0,0);
 }
 
+bool inhull_arma(const mat &testpoints, const mat &hullpoints) {
+
+    mat tess = convhulln_arma(hullpoints);
+    int nt, c;
+    nt = tess.n_rows;
+    c = tess.n_cols;
+    double tol = 0.0;
+    arma::uvec col0 = arma::conv_to<arma::uvec>::from(tess.col(0));
+    arma::uvec col1 = arma::conv_to<arma::uvec>::from(tess.col(1));
+    arma::uvec col2 = arma::conv_to<arma::uvec>::from(tess.col(2));
+  
+
+    arma::mat ab = hullpoints.rows(col0) - hullpoints.rows(col1);
+    arma::mat ac = hullpoints.rows(col0) - hullpoints.rows(col2);
+    mat nrmls(nt,3);
+    for (arma::uword i=0; i<nt; i++){
+      nrmls.row(i) = arma::cross(ab.row(i),ac.row(i));
+    }
+
+    mat nrmllen = arma::sqrt(arma::sum(arma::square(nrmls), 1));
+    mat nrmllen1 = repmat(1/nrmllen, 1, 3);
+    nrmls = nrmls % nrmllen1;
+
+    mat center = arma::mean(hullpoints, 0);
+    mat a = hullpoints.rows(col0);
+    mat dp = arma::sum((repmat(center,nt,1)-a)%nrmls, 1);
+
+    arma::umat k = arma::conv_to<arma::umat>::from(dp < 0);
+    nrmls.rows(arma::find(k)) *= -1.0;
+    mat aN = arma::sum(nrmls % a,1);
+
+    double memblock = 1e6;
+    int blocks = max(1, static_cast<int>(floor(1/(memblock/nt))));
+    mat aNr = aN;
+    mat temp = nrmls*testpoints.t() - aNr;
+
+    //Eigen::Matrix<bool, Eigen::Dynamic, 1> condition_met = (temp.array() >= -tol).colwise().all();
+    arma::uvec condition_met = arma::all(temp >= -tol);
+
+    return condition_met(0,0);
+}
 
 #endif
