@@ -1,2 +1,0 @@
-/usr/bin/ar qc build/liboptim.a CMakeFiles/optim.dir/src/fmincon/Rosenbrock.cpp.o CMakeFiles/optim.dir/src/fmincon/Powell.cpp.o CMakeFiles/optim.dir/src/fmincon/Powell_modified.cpp.o CMakeFiles/optim.dir/src/fmincon/BFGS.cpp.o CMakeFiles/optim.dir/src/fmincon/fmincon.cpp.o
-/usr/bin/ranlib build/liboptim.a

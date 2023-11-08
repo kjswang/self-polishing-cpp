@@ -13,6 +13,8 @@ set(LIBRARY_OUTPUT_PATH ./build)
 #set(CMAKE_CXX_STANDARD 14)
 
 INCLUDE_DIRECTORIES(src)
+INCLUDE_DIRECTORIES(src/bin)
+INCLUDE_DIRECTORIES(src/include)
 INCLUDE_DIRECTORIES(src/fmincon)
 INCLUDE_DIRECTORIES(src/lib)
 INCLUDE_DIRECTORIES(src/lib/QP_lib)
@@ -25,6 +27,8 @@ find_package(BLAS REQUIRED)
 
 add_subdirectory(src)
 # add_subdirectory(src/lib)
+# add_library(optimz src/fmincon/Rosenbrock.cpp src/fmincon/Powell.cpp src/fmincon/Powell.cpp src/fmincon/Powell_modified.cpp
+#         src/fmincon/BFGS.cpp src/fmincon/fmincon.cpp)
 
 set(yaml_cxx_flags "-Wall ${GCC_EXTRA_OPTIONS} -pedantic -Wno-long-long -Wno-unused-variable -std=c++11 ${yaml_cxx_flags}")
 

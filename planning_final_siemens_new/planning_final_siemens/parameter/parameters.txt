@@ -1,0 +1,17 @@
+wp2robot 1.7
+height -0.051
+theta -0.628318530717959
+theta_ini_measure 0 -1.6508 0.3000 0 0.1700 0
+theta_ini_polish 0 -1.6508 0.3000 0 0.1700 -1.9000
+pos_idle 0 -1.9508 0.4200 0 0.3800 -0.4200
+pos_middle 0 -1.9508 0.4200 0 0.3800 -0.4200
+start2exe 10
+thres 0.001
+alphaY_limit 0.3
+alphaZ_limit 0.3
+thres 0.001
+nstep1 5
+nstep2 5
+nwait 1
+theta_init_default 0.0 -2.3 0.5 0.0 0.5 0.0
+wp_pos_init_default 0.0 0.4 0.1

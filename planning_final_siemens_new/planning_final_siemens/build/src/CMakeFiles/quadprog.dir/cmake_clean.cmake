@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o"
-  "CMakeFiles/quadprog.dir/lib/QP_lib/QuadProg++.cc.o.d"
   "build/libquadprog.a"
   "build/libquadprog.pdb"
 )
