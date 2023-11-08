@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../src/lib/sci_arma.h
+cblas.h
+-
+armadillo
+-
+functional
+-
+algorithm
+-
+vector
+-
+string
+-
+cmath
+-
+
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/BFGS.cpp
+sci_arma.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/sci_arma.h
+
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/Powell.cpp
+sci_arma.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/sci_arma.h
+
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/Powell_modified.cpp
+sci_arma.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/sci_arma.h
+
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/Rosenbrock.cpp
+sci_arma.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/sci_arma.h
+
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/fmincon.cpp
+sci_arma.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/fmincon/sci_arma.h
+

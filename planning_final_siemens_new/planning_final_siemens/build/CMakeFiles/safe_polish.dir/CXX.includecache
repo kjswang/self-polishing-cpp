@@ -1601,6 +1601,8 @@ load_parameter.h
 ../src/lib/load_parameter.h
 global_var.h
 ../src/lib/global_var.h
+armadillo
+-
 
 ../src/lib/QP_lib/Array.hh
 set
@@ -1631,6 +1633,8 @@ iomanip
 -
 
 ../src/lib/distance_constraint_3d.h
+iostream
+-
 vector
 -
 Eigen/Dense
@@ -1643,6 +1647,32 @@ cmath
 -
 math_pack.h
 ../src/lib/math_pack.h
+libqhullcpp/Qhull.h
+-
+libqhullcpp/RboxPoints.h
+../src/lib/libqhullcpp/RboxPoints.h
+libqhullcpp/QhullError.h
+../src/lib/libqhullcpp/QhullError.h
+libqhullcpp/QhullQh.h
+../src/lib/libqhullcpp/QhullQh.h
+libqhullcpp/QhullFacet.h
+../src/lib/libqhullcpp/QhullFacet.h
+libqhullcpp/QhullFacetList.h
+../src/lib/libqhullcpp/QhullFacetList.h
+libqhullcpp/QhullFacetSet.h
+../src/lib/libqhullcpp/QhullFacetSet.h
+libqhullcpp/QhullLinkedList.h
+../src/lib/libqhullcpp/QhullLinkedList.h
+libqhullcpp/QhullPoint.h
+../src/lib/libqhullcpp/QhullPoint.h
+libqhullcpp/QhullUser.h
+../src/lib/libqhullcpp/QhullUser.h
+libqhullcpp/QhullVertex.h
+../src/lib/libqhullcpp/QhullVertex.h
+libqhullcpp/QhullVertexSet.h
+../src/lib/libqhullcpp/QhullVertexSet.h
+libqhullcpp/Qhull.h
+../src/lib/libqhullcpp/Qhull.h
 
 ../src/lib/global_var.h
 Eigen/Dense
@@ -1681,6 +1711,8 @@ cmath
 -
 vector
 -
+armadillo
+-
 chrono
 -
 
@@ -1713,6 +1745,8 @@ global_var.h
 ../src/lib/global_var.h
 load_parameter.h
 ../src/lib/load_parameter.h
+armadillo
+-
 
 ../src/lib/safe_polishing.h
 customized_print.h
@@ -1743,6 +1777,30 @@ QuadProg++.hh
 ../src/lib/QuadProg++.hh
 global_var.h
 ../src/lib/global_var.h
+armadillo
+-
+sci_arma.h
+../src/lib/sci_arma.h
+nlopt.h
+-
+chrono
+-
+
+../src/lib/sci_arma.h
+cblas.h
+-
+armadillo
+-
+functional
+-
+algorithm
+-
+vector
+-
+string
+-
+cmath
+-
 
 ../src/lib/structure.h
 Eigen/Dense
@@ -1751,24 +1809,26 @@ string
 -
 vector
 -
+armadillo
+-
 
-/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/safe_polish_main.cpp
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/safe_polish_main.cpp
 iostream
 -
 Eigen/Dense
 -
 safe_polishing.h
-/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/safe_polishing.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/safe_polishing.h
 CapPos.h
-/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/CapPos.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/CapPos.h
 load_parameter.h
-/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/load_parameter.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/load_parameter.h
 fstream
 -
 structure.h
-/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/structure.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/structure.h
 global_var.h
-/home/jiansong/HTPC-1/planning_final_siemens_new/planning_final_siemens/src/global_var.h
+/home/jiansong/self-polishing-cpp/self-polishing-cpp/planning_final_siemens_new/planning_final_siemens/src/global_var.h
 libqhullcpp/Qhull.h
 -
 vector
